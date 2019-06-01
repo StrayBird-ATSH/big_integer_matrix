@@ -18,14 +18,13 @@ int main() {
     std::ifstream infile;
     infile.open(file.data());
     assert(infile.is_open());
-
     std::string count;
     getline(infile, count);
-    std::stringstream stringstream(count);
-    int count_number;
-    stringstream >> count_number;
+    std::stringstream stream(count);
+    int countNumber;
+    stream >> countNumber;
     std::map<std::string, matrix> map;
-    for (int j = 0; j < count_number; ++j) {
+    for (int j = 0; j < countNumber; ++j) {
         std::string name;
         getline(infile, name);
         std::string read[3];
@@ -38,5 +37,18 @@ int main() {
         map.insert(std::pair<std::string, matrix>(name, matrix1));
     }
     infile.close();
+
+
+    std::ifstream fin("expression.in", std::ios::in);
+    char line[1024];
+    while (fin.getline(line, sizeof(line))) {
+
+        std::cout << line << std::endl;
+
+    }
+    fin.clear();
+    fin.close();
+
+
     std::cout << "BigNumber ran successfully." << std::endl;
 }
