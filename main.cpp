@@ -13,6 +13,12 @@
 #include <sstream>
 #include <map>
 
+matrix compute_expression(const std::map<std::string, matrix> map, const std::string expression) {
+
+    return
+            matrix();
+}
+
 int main() {
     std::string file = "matrix.in";
     std::ifstream infile;
@@ -38,13 +44,13 @@ int main() {
     }
     infile.close();
 
+    std::vector<matrix> result;
 
     std::ifstream fin("expression.in", std::ios::in);
     char line[1024];
     while (fin.getline(line, sizeof(line))) {
-
         std::cout << line << std::endl;
-
+        result.push_back(compute_expression(map, line));
     }
     fin.clear();
     fin.close();
