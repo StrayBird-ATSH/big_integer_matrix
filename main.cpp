@@ -15,6 +15,35 @@
 #include <map>
 #include <list>
 
+matrix compute_expression1(std::string expression, const std::map<std::string, matrix> &map) {
+    std::vector<std::string> elements;
+    int previousPosition = 0;
+    std::map<std::string, matrix> customMap;
+    for (int i = 0; i < expression.size(); ++i) {
+        char character = expression[i];
+        if (character == '~' || character == '*' || character == '+' || character == '-') {
+            if (i == 0) { elements.push_back(expression.substr(0, 1)); }
+            elements.push_back(expression.substr(previousPosition, i - previousPosition));
+            elements.push_back(expression.substr(i, 1));
+            previousPosition = i;
+        }
+    }
+
+    std::list<std::string> elements1;
+
+    for (int j = 0; j < elements.size(); ++j) {
+        std::string element = elements[j];
+        if (element == "~") {
+            matrix a = ~map.at(elements[++j]);
+            customMap.insert(std::pair<std::string, matrix>("~" + element, a));
+            elements1.push_back("~" + element);
+        } else
+            elements1.push_back(elements[j]);
+    }
+
+    return matrix();
+}
+
 matrix compute_expression(const std::map<std::string, matrix> &map, const std::string &expression) {
     std::string localExpression = expression;
     std::list<std::string> subExpressions; //strings that are split by += and -=
@@ -31,10 +60,12 @@ matrix compute_expression(const std::map<std::string, matrix> &map, const std::s
             localExpression = localExpression.substr(index2 + 2);
         }
     }
+    std::list<matrix> matrixes;
+    for (auto &subExpression:subExpressions)
+        matrixes.push_back(compute_expression1(subExpression, map));
 
 
-    return
-            matrix();
+    return matrix();
 }
 
 int main() {
