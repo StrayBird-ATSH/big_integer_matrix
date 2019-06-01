@@ -17,7 +17,3 @@ matrix::matrix(std::string matrix[]) {
         matrix_content[j][2] = big_integer(matrix[j].substr(separator_2, length - separator_2));
     }
 }
-
-matrix::matrix() {
-
-}
