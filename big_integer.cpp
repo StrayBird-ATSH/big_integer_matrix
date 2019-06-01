@@ -25,6 +25,8 @@
 
 #include "big_integer.h"
 
+big_integer::big_integer() :
+        _numberString() {}
 
 big_integer::big_integer(std::string number) :
         _numberString(number) {

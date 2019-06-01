@@ -31,6 +31,9 @@
  */
 class big_integer {
 public:
+
+    big_integer();
+
     //@{
     /**
      * BigNumber constructor

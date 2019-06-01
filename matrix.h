@@ -12,6 +12,9 @@ class matrix {
 public:
     matrix();
 
+    ~matrix() {
+    }
+
     explicit matrix(std::string matrix[]);
 
     friend const matrix operator+(matrix &left, matrix &right) {
@@ -39,7 +42,7 @@ public:
 
 
 private:
-    big_integer *matrix_content[3][3];
+    big_integer matrix_content[3][3];
 };
 
 
