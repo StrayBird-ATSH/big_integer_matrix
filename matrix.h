@@ -14,6 +14,8 @@ public:
 
     ~matrix() = default;
 
+    matrix(matrix &originalMatrix);
+
     explicit matrix(std::string matrix[]);
 
     friend const matrix operator+(matrix &left, matrix &right) {
