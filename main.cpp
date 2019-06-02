@@ -89,8 +89,8 @@ matrix compute_expression(const std::map<std::string, matrix> &map, const std::s
     std::string localExpression = expression;
     std::list<std::string> subExpressions; //strings that are split by += and -=
     std::list<std::string> operators;
-    while (expression.find_first_of("+=") != std::string::npos || expression.find_first_of("-=") != std::string::npos) {
-        int index1 = expression.find_first_of("+="), index2 = expression.find_first_of("-=");
+    while (expression.find("+=") != std::string::npos || expression.find("-=") != std::string::npos) {
+        int index1 = expression.find("+="), index2 = expression.find("-=");
         if (((index1 != -1 && index2 != -1) && (index1 < index2)) || index2 == -1) {
             subExpressions.push_back(localExpression.substr(0, index1));
             operators.emplace_back("+=");
