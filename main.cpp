@@ -57,16 +57,32 @@ matrix compute_expression1(std::string expression, const std::map<std::string, m
             if ((elements1[j - 1][0] >= 48 && elements1[j - 1][0] <= 57) ||
                 (elements1[j - 1][0] == '-' && elements1[j - 1][1] >= 48 &&
                  elements1[j - 1][1] <= 57))
-                a = big_integer(elements1[j - 1]) * map.at(elements1[j + 1]);
+                a = big_integer(elements1[j - 1]) * customMap.at(elements1[j + 1]);
             else
-                a = map.at(elements1[j - 1]) * map.at(elements1[j + 1]);
+                a = customMap.at(elements1[j - 1]) * customMap.at(elements1[j + 1]);
             elements2.pop_back();
-            customMap.insert(std::pair<std::string, matrix>("*" + elements[++j], a));
-            elements2.push_back("*" + elements[j]);
+            customMap.insert(std::pair<std::string, matrix>("*" + elements1[++j], a));
+            elements2.push_back("*" + elements1[j]);
         } else elements2.push_back(elements1[j]);
     }
 
-    return matrix();
+    //    Process +/- symbol
+    std::vector<std::string> elements3;
+    for (int j = 0; j < elements2.size(); ++j) {
+        std::string element = elements2[j];
+        if (element == "+") {
+            matrix a = customMap.at(elements2[j - 1]) + customMap.at(elements2[j + 1]);
+            elements3.pop_back();
+            customMap.insert(std::pair<std::string, matrix>("+" + elements2[++j], a));
+            elements3.push_back("+" + elements2[j]);
+        } else if (element == "-") {
+            matrix a = customMap.at(elements2[j - 1]) - customMap.at(elements2[j + 1]);
+            elements3.pop_back();
+            customMap.insert(std::pair<std::string, matrix>("-" + elements2[++j], a));
+            elements3.push_back("-" + elements2[j]);
+        } else elements3.push_back(elements2[j]);
+    }
+    return customMap.at(elements3.back());
 }
 
 matrix compute_expression(const std::map<std::string, matrix> &map, const std::string &expression) {
@@ -88,9 +104,7 @@ matrix compute_expression(const std::map<std::string, matrix> &map, const std::s
     std::list<matrix> matrixes;
     for (auto &subExpression:subExpressions)
         matrixes.push_back(compute_expression1(subExpression, map));
-
-
-    return matrix();
+    return matrixes.back();
 }
 
 int main() {
