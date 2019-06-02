@@ -28,6 +28,14 @@ matrix compute_expression1(std::string expression, const std::map<std::string, m
             previousPosition = i;
         }
     }
+//    Process negative numbers
+    for (int k = 0; k < elements.size(); ++k)
+        if (elements[k] == "-" && (elements[k + 1][0] >= 48 && elements[k + 1][0] <= 57)) {
+            auto iterator = elements.begin() + k;
+            elements.erase(iterator);
+            elements[k] = "-" + elements[k];
+        }
+
 
     std::list<std::string> elements1;
 
