@@ -79,6 +79,12 @@ public:
         return left;
     }
 
+    friend std::ostream &operator<<(std::ostream &stream, const matrix &matrix1) {
+        for (auto &line:matrix1.matrixContent)
+            stream << line[0] << " " << line[1] << " " << line[2] << "\n";
+        return stream;
+    }
+
 private:
     big_integer matrixContent[3][3];
 };
