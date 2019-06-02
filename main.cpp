@@ -11,11 +11,10 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
-#include <algorithm>
 #include <map>
 #include <list>
 
-matrix compute_expression1(std::string expression, const std::map<std::string, matrix> &map) {
+matrix computeExpression1(std::string expression, const std::map<std::string, matrix> &map) {
     std::vector<std::string> elements;
     int previousPosition = 0;
     std::map<std::string, matrix> customMap(map);
@@ -23,11 +22,14 @@ matrix compute_expression1(std::string expression, const std::map<std::string, m
         char character = expression[i];
         if (character == '~' || character == '*' || character == '+' || character == '-') {
             if (i == 0) { elements.push_back(expression.substr(0, 1)); }
-            elements.push_back(expression.substr(previousPosition, i - previousPosition));
-            elements.push_back(expression.substr(i, 1));
-            previousPosition = i;
+            else {
+                elements.push_back(expression.substr(previousPosition, i - previousPosition));
+                elements.push_back(expression.substr(i, 1));
+                previousPosition = i;
+            }
         }
     }
+    elements.push_back(expression.substr(previousPosition + 1));
 //    Process negative numbers
     for (int k = 0; k < elements.size(); ++k)
         if (elements[k] == "-" && (elements[k + 1][0] >= 48 && elements[k + 1][0] <= 57)) {
@@ -42,7 +44,7 @@ matrix compute_expression1(std::string expression, const std::map<std::string, m
         std::string element = elements[j];
         if (element == "~") {
             matrix a = ~customMap.at(elements[++j]);
-            customMap.insert(std::pair<std::string, matrix>("~" + elements[j], a));
+            customMap["~" + elements[j]] = a;
             elements1.push_back("~" + elements[j]);
         } else
             elements1.push_back(elements[j]);
@@ -61,7 +63,7 @@ matrix compute_expression1(std::string expression, const std::map<std::string, m
             else
                 a = customMap.at(elements1[j - 1]) * customMap.at(elements1[j + 1]);
             elements2.pop_back();
-            customMap.insert(std::pair<std::string, matrix>("*" + elements1[++j], a));
+            customMap["*" + elements1[++j]] = a;
             elements2.push_back("*" + elements1[j]);
         } else elements2.push_back(elements1[j]);
     }
@@ -73,19 +75,19 @@ matrix compute_expression1(std::string expression, const std::map<std::string, m
         if (element == "+") {
             matrix a = customMap.at(elements2[j - 1]) + customMap.at(elements2[j + 1]);
             elements3.pop_back();
-            customMap.insert(std::pair<std::string, matrix>("+" + elements2[++j], a));
+            customMap["+" + elements2[++j]] = a;
             elements3.push_back("+" + elements2[j]);
         } else if (element == "-") {
             matrix a = customMap.at(elements2[j - 1]) - customMap.at(elements2[j + 1]);
             elements3.pop_back();
-            customMap.insert(std::pair<std::string, matrix>("-" + elements2[++j], a));
+            customMap["-" + elements2[++j]] = a;
             elements3.push_back("-" + elements2[j]);
         } else elements3.push_back(elements2[j]);
     }
     return customMap.at(elements3.back());
 }
 
-matrix compute_expression(const std::map<std::string, matrix> &map, const std::string &expression) {
+matrix computeExpression(const std::map<std::string, matrix> &map, const std::string &expression) {
     std::string localExpression = expression;
     std::list<std::string> subExpressions; //strings that are split by += and -=
     std::list<std::string> operators;
@@ -101,9 +103,11 @@ matrix compute_expression(const std::map<std::string, matrix> &map, const std::s
             localExpression = localExpression.substr(index2 + 2);
         }
     }
+//    todo: To be changed in the future
+    subExpressions.push_back(localExpression);
     std::list<matrix> matrixes;
     for (auto &subExpression:subExpressions)
-        matrixes.push_back(compute_expression1(subExpression, map));
+        matrixes.push_back(computeExpression1(subExpression, map));
     return matrixes.back();
 }
 
@@ -128,7 +132,7 @@ int main() {
             d = line;
         }
         matrix matrix1(read);
-        map.insert(std::pair<std::string, matrix>(name, matrix1));
+        map[name] = matrix1;
     }
     infile.close();
 
@@ -138,7 +142,7 @@ int main() {
     char line[1024];
     while (fin.getline(line, sizeof(line))) {
         std::cout << line << std::endl;
-        result.push_back(compute_expression(map, line));
+        result.push_back(computeExpression(map, line));
     }
     fin.clear();
     fin.close();
