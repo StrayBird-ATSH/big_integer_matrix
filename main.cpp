@@ -18,7 +18,7 @@
 matrix compute_expression1(std::string expression, const std::map<std::string, matrix> &map) {
     std::vector<std::string> elements;
     int previousPosition = 0;
-    std::map<std::string, matrix> customMap;
+    std::map<std::string, matrix> customMap(map);
     for (int i = 0; i < expression.size(); ++i) {
         char character = expression[i];
         if (character == '~' || character == '*' || character == '+' || character == '-') {
@@ -36,17 +36,34 @@ matrix compute_expression1(std::string expression, const std::map<std::string, m
             elements[k] = "-" + elements[k];
         }
 
-
-    std::list<std::string> elements1;
-
+//    Process ~ symbol
+    std::vector<std::string> elements1;
     for (int j = 0; j < elements.size(); ++j) {
         std::string element = elements[j];
         if (element == "~") {
-            matrix a = ~map.at(elements[++j]);
-            customMap.insert(std::pair<std::string, matrix>("~" + element, a));
-            elements1.push_back("~" + element);
+            matrix a = ~customMap.at(elements[++j]);
+            customMap.insert(std::pair<std::string, matrix>("~" + elements[j], a));
+            elements1.push_back("~" + elements[j]);
         } else
             elements1.push_back(elements[j]);
+    }
+
+//    Process * symbol
+    std::vector<std::string> elements2;
+    for (int j = 0; j < elements1.size(); ++j) {
+        std::string element = elements1[j];
+        if (element == "*") {
+            matrix a;
+            if ((elements1[j - 1][0] >= 48 && elements1[j - 1][0] <= 57) ||
+                (elements1[j - 1][0] == '-' && elements1[j - 1][1] >= 48 &&
+                 elements1[j - 1][1] <= 57))
+                a = big_integer(elements1[j - 1]) * map.at(elements1[j + 1]);
+            else
+                a = map.at(elements1[j - 1]) * map.at(elements1[j + 1]);
+            elements2.pop_back();
+            customMap.insert(std::pair<std::string, matrix>("*" + elements[++j], a));
+            elements2.push_back("*" + elements[j]);
+        } else elements2.push_back(elements1[j]);
     }
 
     return matrix();
