@@ -25,8 +25,11 @@ matrix computeExpression1(std::string expression, const std::map<std::string, ma
                 elements.push_back(expression.substr(previousPosition, 1));
                 previousPosition++;
             } else {
-                elements.push_back(expression.substr(previousPosition, i - previousPosition));
-                elements.push_back(expression.substr(i, 1));
+                if (character == '~') elements.push_back("~");
+                else {
+                    elements.push_back(expression.substr(previousPosition, i - previousPosition));
+                    elements.push_back(expression.substr(i, 1));
+                }
                 previousPosition = i + 1;
             }
         }
@@ -118,7 +121,7 @@ matrix computeExpression(const std::map<std::string, matrix> &map, const std::st
 }
 
 int main() {
-    std::string file = "matrix.in";
+    std::string file = "testcase_matrix.in";
     std::ifstream infile;
     infile.open(file.data());
     assert(infile.is_open());
@@ -144,7 +147,7 @@ int main() {
 
     std::vector<matrix> result;
 
-    std::ifstream fin("expression.in", std::ios::in);
+    std::ifstream fin("testcase_expression.in", std::ios::in);
     char line[1024];
     while (fin.getline(line, sizeof(line))) {
         std::cout << line << std::endl;
