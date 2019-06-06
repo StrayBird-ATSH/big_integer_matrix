@@ -21,15 +21,18 @@ matrix computeExpression1(std::string expression, const std::map<std::string, ma
     for (int i = 0; i < expression.size(); ++i) {
         char character = expression[i];
         if (character == '~' || character == '*' || character == '+' || character == '-') {
-            if (i == 0) { elements.push_back(expression.substr(0, 1)); }
+            if (i == 0) {
+                elements.push_back(expression.substr(previousPosition, 1));
+                previousPosition++;
+            }
             else {
                 elements.push_back(expression.substr(previousPosition, i - previousPosition));
                 elements.push_back(expression.substr(i, 1));
-                previousPosition = i;
+                previousPosition = i + 1;
             }
         }
     }
-    elements.push_back(expression.substr(previousPosition + 1));
+    elements.push_back(expression.substr(previousPosition));
 //    Process negative numbers
     for (int k = 0; k < elements.size(); ++k)
         if (elements[k] == "-" && (elements[k + 1][0] >= 48 && elements[k + 1][0] <= 57)) {
