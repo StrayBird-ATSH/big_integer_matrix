@@ -24,8 +24,7 @@ matrix computeExpression1(std::string expression, const std::map<std::string, ma
             if (i == 0) {
                 elements.push_back(expression.substr(previousPosition, 1));
                 previousPosition++;
-            }
-            else {
+            } else {
                 elements.push_back(expression.substr(previousPosition, i - previousPosition));
                 elements.push_back(expression.substr(i, 1));
                 previousPosition = i + 1;
@@ -66,8 +65,10 @@ matrix computeExpression1(std::string expression, const std::map<std::string, ma
             else
                 a = customMap.at(elements1[j - 1]) * customMap.at(elements1[j + 1]);
             elements2.pop_back();
-            customMap["*" + elements1[++j]] = a;
-            elements2.push_back("*" + elements1[j]);
+            j++;
+            elements1[j] = "*" + elements1[j];
+            customMap[elements1[j]] = a;
+            elements2.push_back(elements1[j]);
         } else elements2.push_back(elements1[j]);
     }
 
@@ -80,11 +81,13 @@ matrix computeExpression1(std::string expression, const std::map<std::string, ma
             elements3.pop_back();
             customMap["+" + elements2[++j]] = a;
             elements3.push_back("+" + elements2[j]);
+            elements2[j] = "+" + elements2[j];
         } else if (element == "-") {
             matrix a = customMap.at(elements2[j - 1]) - customMap.at(elements2[j + 1]);
             elements3.pop_back();
             customMap["-" + elements2[++j]] = a;
             elements3.push_back("-" + elements2[j]);
+            elements2[j] = "-" + elements2[j];
         } else elements3.push_back(elements2[j]);
     }
     return customMap.at(elements3.back());
