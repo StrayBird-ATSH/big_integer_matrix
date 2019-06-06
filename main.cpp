@@ -36,12 +36,12 @@ matrix computeExpression1(std::string expression, const std::map<std::string, ma
     }
     elements.push_back(expression.substr(previousPosition));
 //    Process negative numbers
-    for (int k = 0; k < elements.size(); ++k)
-        if (elements[k] == "-" && (elements[k + 1][0] >= 48 && elements[k + 1][0] <= 57)) {
-            auto iterator = elements.begin() + k;
-            elements.erase(iterator);
-            elements[k] = "-" + elements[k];
-        }
+    int k = 0;
+    if (elements[k] == "-" && (elements[k + 1][0] >= 48 && elements[k + 1][0] <= 57)) {
+        auto iterator = elements.begin() + k;
+        elements.erase(iterator);
+        elements[k] = "-" + elements[k];
+    }
 
 //    Process ~ symbol
     std::vector<std::string> elements1;
