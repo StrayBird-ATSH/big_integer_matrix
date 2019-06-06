@@ -118,7 +118,7 @@ matrix computeExpression(const std::map<std::string, matrix> &map, const std::st
 }
 
 int main() {
-    std::string file = "matrix.in";
+    std::string file = "testcase_matrix.in";
     std::ifstream infile;
     infile.open(file.data());
     assert(infile.is_open());
@@ -144,7 +144,7 @@ int main() {
 
     std::vector<matrix> result;
 
-    std::ifstream fin("expression.in", std::ios::in);
+    std::ifstream fin("testcase_expression.in", std::ios::in);
     char line[1024];
     while (fin.getline(line, sizeof(line))) {
         std::cout << line << std::endl;
