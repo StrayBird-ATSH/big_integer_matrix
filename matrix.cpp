@@ -67,11 +67,7 @@ std::ostream &operator<<(std::ostream &stream, const matrix &matrix1) {
     return stream;
 }
 
-matrix computeExpression(const std::map<std::string, matrix> &map, const std::string &expression) {
-    return computeExpression1(expression, map);
-}
-
-matrix computeExpression1(std::string expression, const std::map<std::string, matrix> &map) {
+matrix eval(std::string expression, const std::map<std::string, matrix> &map) {
     std::vector<std::string> elements;
     int previousPosition = 0;
     std::map<std::string, matrix> customMap(map);

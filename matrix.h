@@ -36,8 +36,6 @@ private:
     big_integer matrixContent[3][3];
 };
 
-matrix computeExpression(const std::map<std::string, matrix> &map, const std::string &expression);
-
-matrix computeExpression1(std::string expression, const std::map<std::string, matrix> &map);
+matrix eval(std::string expression, const std::map<std::string, matrix> &map);
 
 #endif //BIG_NUM_MATRIX_H

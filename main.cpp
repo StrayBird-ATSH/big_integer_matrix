@@ -24,7 +24,7 @@ int main() {
     char line[1024];
     while (fin.getline(line, sizeof(line))) {
         std::cout << line << std::endl;
-        result.push_back(computeExpression(map, line));
+        result.push_back(eval(line, map));
     }
     fin.close();
 
