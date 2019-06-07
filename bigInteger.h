@@ -189,63 +189,7 @@ public:
      * @return The new value after addition and assignment
      */
     bigInteger &operator+=(const bigInteger &other);
-
-    bigInteger &operator+=(const long long &other);
-
-    bigInteger &operator+=(const std::string &other);
     //@}
-
-    //@{
-    /**
-     * Subtraction assignment operator\n
-     * Subtracts and assigns a value to the current instance
-     * @param other - The value being subtracted
-     * @return The new value after subtraction and assignment
-     */
-    bigInteger &operator-=(const bigInteger &other);
-
-    bigInteger &operator-=(const long long &other);
-
-    bigInteger &operator-=(const std::string &other);
-    //@}
-
-    //@{
-    /**
-     * Multiplication assignment operator\n
-     * Multiplies and assigns a value to the current instance
-     * @param other - The value being multiplied
-     * @return The new value after multiplication and assignment
-     */
-    bigInteger &operator*=(const bigInteger &other);
-
-    bigInteger &operator*=(const long long &other);
-
-    bigInteger &operator*=(const std::string &other);
-    //@}
-
-    /**
-     * Pre-increment operator
-     * @return The incremented BigNumber
-     */
-    bigInteger &operator++();
-
-    /**
-     * Pre-decrement operator
-     * @return The decremented BigNumber
-     */
-    bigInteger &operator--();
-
-    /**
-     * Post-increment operator
-     * @return The incremented BigNumber
-     */
-    bigInteger operator++(int);
-
-    /**
-     * Post-decrement operator
-     * @return The decremented BigNumber
-     */
-    bigInteger operator--(int);
 
     /**
      * The index operator
