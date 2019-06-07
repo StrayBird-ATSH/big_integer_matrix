@@ -388,5 +388,4 @@ private:
     big_integer dividestr(const std::string &other);
 };
 
-
 #endif

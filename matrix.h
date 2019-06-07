@@ -7,6 +7,7 @@
 
 #include "big_integer.h"
 #include <string>
+#include <map>
 
 class matrix {
 public:
@@ -89,5 +90,8 @@ private:
     big_integer matrixContent[3][3];
 };
 
+matrix computeExpression(const std::map<std::string, matrix> &map, const std::string &expression);
+
+matrix computeExpression1(std::string expression, const std::map<std::string, matrix> &map);
 
 #endif //BIGNUMMATRIX_MATRIX_H
