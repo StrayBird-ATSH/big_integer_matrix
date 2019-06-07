@@ -45,20 +45,6 @@ public:
     bigInteger multiply(bigInteger other);
 
     /**
-     * Divide the current instance by another BigNumber
-     * @param other - The other BigNumber
-     * @return The quotient of the two BigNumbers
-     */
-    bigInteger divide(bigInteger other);
-
-    /**
-     * Raise the current instance to the power of an exponent
-     * @param exponent - The power to be raised by
-     * @return - The resulting BigNumber after exponentiation
-     */
-    bigInteger pow(int exponent);
-
-    /**
      * Get the string value of the current instance
      * @return The BigNumber as a string
      */
@@ -114,10 +100,6 @@ public:
      * @return The sum of the two numbers
      */
     friend bigInteger operator+(bigInteger b1, const bigInteger &b2);
-
-    friend bigInteger operator+(bigInteger b1, const long long &b2);
-
-    friend bigInteger operator+(bigInteger b1, const std::string &b2);
     //@}
 
     //@{
@@ -128,10 +110,6 @@ public:
      * @return The difference of the two numbers
      */
     friend bigInteger operator-(bigInteger b1, const bigInteger &b2);
-
-    friend bigInteger operator-(bigInteger b1, const long long &b2);
-
-    friend bigInteger operator-(bigInteger b1, const std::string &b2);
     //@}
 
     //@{
@@ -142,33 +120,7 @@ public:
      * @return The product of the two numbers
      */
     friend bigInteger operator*(bigInteger b1, const bigInteger &b2);
-
-    friend bigInteger operator*(bigInteger b1, const long long &b2);
-
-    friend bigInteger operator*(bigInteger b1, const std::string &b2);
     //@}
-
-    //@{
-    /**
-     * Division operator
-     * @param b1 - The current instance
-     * @param b2 - The number being divided by
-     * @return The quotient of the two numbers
-     */
-    friend bigInteger operator/(bigInteger b1, const bigInteger &b2);
-
-    friend bigInteger operator/(bigInteger b1, const long long &b2);
-
-    friend bigInteger operator/(bigInteger b1, const std::string &b2);
-    //@}
-
-    /**
-     * Exponent operator
-     * @param b1 - The current instance
-     * @param b2 - The exponent
-     * @return The value after exponentiation
-     */
-    friend bigInteger operator^(bigInteger b1, const int &b2);
 
     //@{
     /**
@@ -271,20 +223,6 @@ public:
     bigInteger &operator*=(const std::string &other);
     //@}
 
-    //@{
-    /**
-     * Division assignment operator\n
-     * Divides and assigns a value to the current instance
-     * @param other - The value being divided
-     * @return The new value after division and assignment
-     */
-    bigInteger &operator/=(const bigInteger &other);
-
-    bigInteger &operator/=(const long long &other);
-
-    bigInteger &operator/=(const std::string &other);
-    //@}
-
     /**
      * Pre-increment operator
      * @return The incremented BigNumber
@@ -318,23 +256,6 @@ public:
 
 private:
     std::string _numberString;      //The big number represented as a string
-
-    //Methods
-    bigInteger addll(const long long &other);
-
-    bigInteger addstr(const std::string &other);
-
-    bigInteger subtractll(const long long &other);
-
-    bigInteger subtractstr(const std::string &other);
-
-    bigInteger multiplyll(const long long &other);
-
-    bigInteger multiplystr(const std::string &other);
-
-    bigInteger dividell(const long long &other);
-
-    bigInteger dividestr(const std::string &other);
 };
 
 #endif
