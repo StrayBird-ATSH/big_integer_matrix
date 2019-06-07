@@ -69,7 +69,7 @@ matrix computeExpression1(std::string expression, const std::map<std::string, ma
                 a = customMap.at(elements1[j - 1]) * customMap.at(elements1[j + 1]);
             elements2.pop_back();
             j++;
-            elements1[j] = "*" + elements1[j];
+            elements1[j] = "*" + j + elements1[j];
             customMap[elements1[j]] = a;
             elements2.push_back(elements1[j]);
         } else elements2.push_back(elements1[j]);
