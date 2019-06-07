@@ -8,7 +8,7 @@ bigInteger::bigInteger(std::string number) : _numberString(number) {}
 
 bigInteger::bigInteger(long long number) : _numberString(std::to_string(number)) {}
 
-bigInteger bigInteger::add(bigInteger other) {
+bigInteger bigInteger::add(const bigInteger other) {
     bigInteger b1 = other > *this ? other : *this;
     bigInteger b2 = other > *this ? *this : other;
     if (b1.isNegative() || b2.isNegative()) {
@@ -40,7 +40,7 @@ bigInteger bigInteger::add(bigInteger other) {
 }
 
 
-bigInteger bigInteger::subtract(bigInteger other) {
+bigInteger bigInteger::subtract(const bigInteger other) {
     bigInteger b1 = *this, b2 = other;
     if (b1.isNegative() || b2.isNegative()) {
         if (b1.isNegative() && b2.isNegative()) {
@@ -115,14 +115,14 @@ bigInteger bigInteger::subtract(bigInteger other) {
         n = 0;
     }
     if (takeOffOne) {
-        std::string number = "";
+        std::string number;
         for (int j = b1._numberString.length() - b2._numberString.length() - 1; j >= 0; --j) {
             if (b1._numberString[j] == '0') {
                 number += "0";
                 continue;
             } else {
                 number.insert(number.begin(), b1._numberString[j]);
-                int t = atoi(number.c_str());
+                int t = strtol(number.c_str(), NULL, 10);
                 --t;
                 b1._numberString.replace(0, number.size(), std::to_string(t));
                 break;
@@ -153,7 +153,7 @@ bigInteger bigInteger::subtract(bigInteger other) {
     return bigInteger(results);
 }
 
-bigInteger bigInteger::multiply(bigInteger other) {
+bigInteger bigInteger::multiply(const bigInteger other) {
     bigInteger b1 = other > *this ? other : *this;
     bigInteger b2 = other > *this ? *this : other;
     if (b1.isNegative() || b2.isNegative()) {
@@ -297,7 +297,7 @@ bool operator>(bigInteger b1, const bigInteger &b2) {
     return false;
 }
 
-bool operator<(bigInteger b1, const bigInteger &b2) {
+bool operator<(bigInteger &b1, const bigInteger &b2) {
     return !(b1 == b2) && !(b1 > b2);
 }
 
@@ -308,10 +308,7 @@ unsigned int bigInteger::operator[](int index) {
     return static_cast<unsigned int>(this->_numberString[index] - '0');
 }
 
-bigInteger &bigInteger::operator=(const bigInteger &other) {
-    this->_numberString = other._numberString;
-    return *this;
-}
+bigInteger &bigInteger::operator=(const bigInteger &other) = default;
 
 bigInteger &bigInteger::operator+=(const bigInteger &other) {
     *this = *this + other;

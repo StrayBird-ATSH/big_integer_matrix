@@ -146,7 +146,7 @@ public:
      * @param b2 - Another BigNumber
      * @return True if current instance is less, otherwise false
      */
-    friend bool operator<(bigInteger b1, const bigInteger &b2);
+    friend bool operator<(bigInteger &b1, const bigInteger &b2);
 
     //@{
     /**
