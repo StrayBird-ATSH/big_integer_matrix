@@ -90,17 +90,17 @@ matrix eval(std::string expression, const std::map<std::string, matrix> &map) {
     elements.push_back(expression.substr(previousPosition));
 //    Process negative numbers
     if (elements[0] == "-" && (elements[1][0] >= 48 && elements[1][0] <= 57)) {
-        auto iterator = elements.begin();
-        elements.erase(iterator);
+        elements.erase(elements.begin());
         elements[0] = "-" + elements[0];
     }
 
 //    Process ~ symbol
     std::vector<std::string> elements1;
+    matrix a;
     for (int j = 0; j < elements.size(); ++j) {
         std::string element = elements[j];
         if (element == "~") {
-            matrix a = ~customMap.at(elements[++j]);
+            a = ~customMap.at(elements[++j]);
             customMap["~" + elements[j]] = a;
             elements1.push_back("~" + elements[j]);
         } else
@@ -112,7 +112,6 @@ matrix eval(std::string expression, const std::map<std::string, matrix> &map) {
     for (int j = 0; j < elements1.size(); ++j) {
         std::string element = elements1[j];
         if (element == "*") {
-            matrix a;
             if ((elements1[j - 1][0] >= 48 && elements1[j - 1][0] <= 57) ||
                 (elements1[j - 1][0] == '-' && elements1[j - 1][1] >= 48 &&
                  elements1[j - 1][1] <= 57))
@@ -131,18 +130,13 @@ matrix eval(std::string expression, const std::map<std::string, matrix> &map) {
     std::vector<std::string> elements3;
     for (int j = 0; j < elements2.size(); ++j) {
         std::string element = elements2[j];
-        if (element == "+") {
-            matrix a = customMap.at(elements2[j - 1]) + customMap.at(elements2[j + 1]);
+        if (element == "+" || element == "-") {
+            if (element == "+") a = customMap.at(elements2[j - 1]) + customMap.at(elements2[j + 1]);
+            else a = customMap.at(elements2[j - 1]) - customMap.at(elements2[j + 1]);
             elements3.pop_back();
-            customMap["+" + elements2[++j]] = a;
-            elements3.push_back("+" + elements2[j]);
-            elements2[j] = "+" + elements2[j];
-        } else if (element == "-") {
-            matrix a = customMap.at(elements2[j - 1]) - customMap.at(elements2[j + 1]);
-            elements3.pop_back();
-            customMap["-" + elements2[++j]] = a;
-            elements3.push_back("-" + elements2[j]);
-            elements2[j] = "-" + elements2[j];
+            customMap[element + elements2[++j]] = a;
+            elements3.push_back(element + elements2[j]);
+            elements2[j] = element + elements2[j];
         } else elements3.push_back(elements2[j]);
     }
     return customMap.at(elements3.back());
