@@ -2,9 +2,7 @@
 // Created by zhang on 5/31/2019.
 //
 
-#include <cstring>
 #include "matrix.h"
-#include <algorithm>
 #include <list>
 
 matrix::matrix(std::string matrix[]) {

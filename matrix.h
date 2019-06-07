@@ -2,11 +2,10 @@
 // Created by zhang on 5/31/2019.
 //
 
-#ifndef BIGNUMMATRIX_MATRIX_H
-#define BIGNUMMATRIX_MATRIX_H
+#ifndef BIG_NUM_MATRIX_H
+#define BIG_NUM_MATRIX_H
 
 #include "big_integer.h"
-#include <string>
 #include <map>
 
 class matrix {
@@ -41,4 +40,4 @@ matrix computeExpression(const std::map<std::string, matrix> &map, const std::st
 
 matrix computeExpression1(std::string expression, const std::map<std::string, matrix> &map);
 
-#endif //BIGNUMMATRIX_MATRIX_H
+#endif //BIG_NUM_MATRIX_H
