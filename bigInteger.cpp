@@ -1,36 +1,12 @@
-/*
- * The MIT License (MIT)
- *
- * Copyright (c) 2015 Mark Guerra
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify, merge,
- * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
- * to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
- * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
- * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
- * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 #include "bigInteger.h"
 #include <sstream>
 #include <stack>
 
-bigInteger::bigInteger() :
-        _numberString() {}
+bigInteger::bigInteger() : _numberString() {}
 
-bigInteger::bigInteger(std::string number) :
-        _numberString(number) {
-}
+bigInteger::bigInteger(std::string number) : _numberString(number) {}
 
-bigInteger::bigInteger(long long number) :
-        _numberString(std::to_string(number)) {}
+bigInteger::bigInteger(long long number) : _numberString(std::to_string(number)) {}
 
 bigInteger bigInteger::add(bigInteger other) {
     bigInteger b1 = other > *this ? other : *this;
@@ -344,28 +320,8 @@ bool bigInteger::equals(const std::string &other) {
     return this->getString() == other;
 }
 
-unsigned int bigInteger::digits() {
-    return this->_numberString.length() - static_cast<int>(this->isNegative());
-}
-
 bool bigInteger::isNegative() const {
     return this->_numberString[0] == '-';
-}
-
-bool bigInteger::isPositive() {
-    return !this->isNegative();
-}
-
-bool bigInteger::isEven() {
-    return this->_numberString[this->_numberString.length() - 1] % 2 == 0;
-}
-
-bool bigInteger::isOdd() {
-    return !this->isEven();
-}
-
-bigInteger bigInteger::abs() const {
-    return bigInteger(this->_numberString.substr(static_cast<unsigned int>(this->isNegative())));
 }
 
 std::ostream &operator<<(std::ostream &os, const bigInteger &num) {

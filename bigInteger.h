@@ -93,40 +93,10 @@ public:
     //@}
 
     /**
-     * Get the number of digits in the current instance
-     * @return The number of digits
-     */
-    unsigned int digits();
-
-    /**
      * Get whether or not the current instance is a negative number
      * @return True if negative, otherwise false
      */
     bool isNegative() const;
-
-    /**
-     * Get whether or not the current instance is a positive number
-     * @return True if positive, otherwise false
-     */
-    bool isPositive();
-
-    /**
-     * Get whether or not the current instance is an even number
-     * @return True if even, otherwise false
-     */
-    bool isEven();
-
-    /**
-     * Get whether or not the current instance is an odd number
-     * @return True if odd, otherwise false
-     */
-    bool isOdd();
-
-    /**
-     * Get the absolute value of the current instance
-     * @return The absolute value of the BigNumber
-     */
-    bigInteger abs() const;
 
     /**
      * Output stream operator
