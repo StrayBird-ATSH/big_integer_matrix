@@ -135,13 +135,8 @@ int main() {
         std::string name;
         infile >> name;
         std::string read[9];
-        for (auto &d:read) {
-            std::string line;
-            infile >> line;
-            d = line;
-        }
-        matrix matrix1(read);
-        map[name] = matrix1;
+        for (auto &d:read) infile >> d;
+        map[name] = matrix(read);
     }
     infile.close();
 
