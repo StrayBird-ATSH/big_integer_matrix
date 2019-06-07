@@ -1,24 +1,3 @@
-/*
- * The MIT License (MIT)
- *
- * Copyright (c) 2015 Mark Guerra
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify, merge,
- * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
- * to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
- * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
- * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
- * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 #ifndef BIGNUMBER_H
 #define BIGNUMBER_H
 
@@ -29,19 +8,19 @@
 /**
  * BigNumber class
  */
-class big_integer {
+class bigInteger {
 public:
 
-    big_integer();
+    bigInteger();
 
     //@{
     /**
      * BigNumber constructor
      * @param number - The initial value of the BigNumber
      */
-    big_integer(std::string number);
+    bigInteger(std::string number);
 
-    big_integer(long long number);
+    bigInteger(long long number);
     //@}
 
     /**
@@ -49,35 +28,35 @@ public:
      * @param other - The other BigNumber
      * @return The sum of the two BigNumbers
      */
-    big_integer add(big_integer other);
+    bigInteger add(bigInteger other);
 
     /**
      * Subtract another BigNumber from the current instance
      * @param other - The other BigNumber
      * @return The difference of the two BigNumbers
      */
-    big_integer subtract(big_integer other);
+    bigInteger subtract(bigInteger other);
 
     /**
      * Multiply the current instance by another BigNumber
      * @param other - The other BigNumber
      * @return The product of the two BigNumbers
      */
-    big_integer multiply(big_integer other);
+    bigInteger multiply(bigInteger other);
 
     /**
      * Divide the current instance by another BigNumber
      * @param other - The other BigNumber
      * @return The quotient of the two BigNumbers
      */
-    big_integer divide(big_integer other);
+    bigInteger divide(bigInteger other);
 
     /**
      * Raise the current instance to the power of an exponent
      * @param exponent - The power to be raised by
      * @return - The resulting BigNumber after exponentiation
      */
-    big_integer pow(int exponent);
+    bigInteger pow(int exponent);
 
     /**
      * Get the string value of the current instance
@@ -90,15 +69,15 @@ public:
      * @param newStr - The new value for the BigNumber
      * @return The BigNumber with the new value
      */
-    big_integer setString(const std::string &newStr);
+    bigInteger setString(const std::string &newStr);
 
     /**
      * Negates the current instance
      * @return The BigNumber after negation
      */
-    big_integer negate();
+    bigInteger negate();
 
-    big_integer trimLeadingZeros();
+    bigInteger trimLeadingZeros();
 
     //@{
     /**
@@ -106,7 +85,7 @@ public:
      * @param other - The other BigNumber
      * @return True if equal, otherwise false
      */
-    bool equals(const big_integer &other);
+    bool equals(const bigInteger &other);
 
     bool equals(const long long &other);
 
@@ -147,7 +126,7 @@ public:
      * Get the absolute value of the current instance
      * @return The absolute value of the BigNumber
      */
-    big_integer abs() const;
+    bigInteger abs() const;
 
     /**
      * Output stream operator
@@ -155,7 +134,7 @@ public:
      * @param num The current instance
      * @return The output stream with the current instance
      */
-    friend std::ostream &operator<<(std::ostream &os, const big_integer &num);
+    friend std::ostream &operator<<(std::ostream &os, const bigInteger &num);
 
     //@{
     /**
@@ -164,11 +143,11 @@ public:
      * @param b2 - The number being added
      * @return The sum of the two numbers
      */
-    friend big_integer operator+(big_integer b1, const big_integer &b2);
+    friend bigInteger operator+(bigInteger b1, const bigInteger &b2);
 
-    friend big_integer operator+(big_integer b1, const long long &b2);
+    friend bigInteger operator+(bigInteger b1, const long long &b2);
 
-    friend big_integer operator+(big_integer b1, const std::string &b2);
+    friend bigInteger operator+(bigInteger b1, const std::string &b2);
     //@}
 
     //@{
@@ -178,11 +157,11 @@ public:
      * @param b2 - The number being subtracted
      * @return The difference of the two numbers
      */
-    friend big_integer operator-(big_integer b1, const big_integer &b2);
+    friend bigInteger operator-(bigInteger b1, const bigInteger &b2);
 
-    friend big_integer operator-(big_integer b1, const long long &b2);
+    friend bigInteger operator-(bigInteger b1, const long long &b2);
 
-    friend big_integer operator-(big_integer b1, const std::string &b2);
+    friend bigInteger operator-(bigInteger b1, const std::string &b2);
     //@}
 
     //@{
@@ -192,11 +171,11 @@ public:
      * @param b2 - The number being multiplied by
      * @return The product of the two numbers
      */
-    friend big_integer operator*(big_integer b1, const big_integer &b2);
+    friend bigInteger operator*(bigInteger b1, const bigInteger &b2);
 
-    friend big_integer operator*(big_integer b1, const long long &b2);
+    friend bigInteger operator*(bigInteger b1, const long long &b2);
 
-    friend big_integer operator*(big_integer b1, const std::string &b2);
+    friend bigInteger operator*(bigInteger b1, const std::string &b2);
     //@}
 
     //@{
@@ -206,11 +185,11 @@ public:
      * @param b2 - The number being divided by
      * @return The quotient of the two numbers
      */
-    friend big_integer operator/(big_integer b1, const big_integer &b2);
+    friend bigInteger operator/(bigInteger b1, const bigInteger &b2);
 
-    friend big_integer operator/(big_integer b1, const long long &b2);
+    friend bigInteger operator/(bigInteger b1, const long long &b2);
 
-    friend big_integer operator/(big_integer b1, const std::string &b2);
+    friend bigInteger operator/(bigInteger b1, const std::string &b2);
     //@}
 
     /**
@@ -219,7 +198,7 @@ public:
      * @param b2 - The exponent
      * @return The value after exponentiation
      */
-    friend big_integer operator^(big_integer b1, const int &b2);
+    friend bigInteger operator^(bigInteger b1, const int &b2);
 
     //@{
     /**
@@ -228,11 +207,11 @@ public:
      * @param b2 - Another value
      * @return True if equal, otherwise false
      */
-    friend bool operator==(big_integer b1, const big_integer &b2);
+    friend bool operator==(bigInteger b1, const bigInteger &b2);
 
-    friend bool operator==(big_integer b1, const long long &b2);
+    friend bool operator==(bigInteger b1, const long long &b2);
 
-    friend bool operator==(big_integer b1, const std::string &b2);
+    friend bool operator==(bigInteger b1, const std::string &b2);
     //@}
 
     /**
@@ -241,7 +220,7 @@ public:
      * @param b2 - Another BigNumber
      * @return True if current instance is greater, otherwise false
      */
-    friend bool operator>(big_integer b1, const big_integer &b2);
+    friend bool operator>(bigInteger b1, const bigInteger &b2);
 
     /**
      * Less-than operator
@@ -249,7 +228,7 @@ public:
      * @param b2 - Another BigNumber
      * @return True if current instance is less, otherwise false
      */
-    friend bool operator<(big_integer b1, const big_integer &b2);
+    friend bool operator<(bigInteger b1, const bigInteger &b2);
 
     /**
      * Greater-than or equal-to operator
@@ -257,7 +236,7 @@ public:
      * @param b2 - Another BigNumber
      * @return True if current instance is greater or equal, otherwise false
      */
-    friend bool operator>=(big_integer b1, const big_integer &b2);
+    friend bool operator>=(bigInteger b1, const bigInteger &b2);
 
     /**
      * Less-than or equal-to operator
@@ -265,7 +244,7 @@ public:
      * @param b2 - Another BigNumber
      * @return True if current instance is less or equal, otherwise false
      */
-    friend bool operator<=(big_integer b1, const big_integer &b2);
+    friend bool operator<=(bigInteger b1, const bigInteger &b2);
 
     //@{
     /**
@@ -273,11 +252,11 @@ public:
      * @param other - The new value for the BigNumber
      * @return A BigNumber containing the new value
      */
-    big_integer &operator=(const big_integer &other);
+    bigInteger &operator=(const bigInteger &other);
 
-    big_integer &operator=(const long long &other);
+    bigInteger &operator=(const long long &other);
 
-    big_integer &operator=(const std::string &other);
+    bigInteger &operator=(const std::string &other);
     //@}
 
     //@{
@@ -287,11 +266,11 @@ public:
      * @param other - The value being added
      * @return The new value after addition and assignment
      */
-    big_integer &operator+=(const big_integer &other);
+    bigInteger &operator+=(const bigInteger &other);
 
-    big_integer &operator+=(const long long &other);
+    bigInteger &operator+=(const long long &other);
 
-    big_integer &operator+=(const std::string &other);
+    bigInteger &operator+=(const std::string &other);
     //@}
 
     //@{
@@ -301,11 +280,11 @@ public:
      * @param other - The value being subtracted
      * @return The new value after subtraction and assignment
      */
-    big_integer &operator-=(const big_integer &other);
+    bigInteger &operator-=(const bigInteger &other);
 
-    big_integer &operator-=(const long long &other);
+    bigInteger &operator-=(const long long &other);
 
-    big_integer &operator-=(const std::string &other);
+    bigInteger &operator-=(const std::string &other);
     //@}
 
     //@{
@@ -315,11 +294,11 @@ public:
      * @param other - The value being multiplied
      * @return The new value after multiplication and assignment
      */
-    big_integer &operator*=(const big_integer &other);
+    bigInteger &operator*=(const bigInteger &other);
 
-    big_integer &operator*=(const long long &other);
+    bigInteger &operator*=(const long long &other);
 
-    big_integer &operator*=(const std::string &other);
+    bigInteger &operator*=(const std::string &other);
     //@}
 
     //@{
@@ -329,36 +308,36 @@ public:
      * @param other - The value being divided
      * @return The new value after division and assignment
      */
-    big_integer &operator/=(const big_integer &other);
+    bigInteger &operator/=(const bigInteger &other);
 
-    big_integer &operator/=(const long long &other);
+    bigInteger &operator/=(const long long &other);
 
-    big_integer &operator/=(const std::string &other);
+    bigInteger &operator/=(const std::string &other);
     //@}
 
     /**
      * Pre-increment operator
      * @return The incremented BigNumber
      */
-    big_integer &operator++();
+    bigInteger &operator++();
 
     /**
      * Pre-decrement operator
      * @return The decremented BigNumber
      */
-    big_integer &operator--();
+    bigInteger &operator--();
 
     /**
      * Post-increment operator
      * @return The incremented BigNumber
      */
-    big_integer operator++(int);
+    bigInteger operator++(int);
 
     /**
      * Post-decrement operator
      * @return The decremented BigNumber
      */
-    big_integer operator--(int);
+    bigInteger operator--(int);
 
     /**
      * The index operator
@@ -371,21 +350,21 @@ private:
     std::string _numberString;      //The big number represented as a string
 
     //Methods
-    big_integer addll(const long long &other);
+    bigInteger addll(const long long &other);
 
-    big_integer addstr(const std::string &other);
+    bigInteger addstr(const std::string &other);
 
-    big_integer subtractll(const long long &other);
+    bigInteger subtractll(const long long &other);
 
-    big_integer subtractstr(const std::string &other);
+    bigInteger subtractstr(const std::string &other);
 
-    big_integer multiplyll(const long long &other);
+    bigInteger multiplyll(const long long &other);
 
-    big_integer multiplystr(const std::string &other);
+    bigInteger multiplystr(const std::string &other);
 
-    big_integer dividell(const long long &other);
+    bigInteger dividell(const long long &other);
 
-    big_integer dividestr(const std::string &other);
+    bigInteger dividestr(const std::string &other);
 };
 
 #endif

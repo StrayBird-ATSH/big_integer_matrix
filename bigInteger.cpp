@@ -18,26 +18,23 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
  * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
+#include "bigInteger.h"
 #include <sstream>
 #include <stack>
-#include <iostream>
 
-#include "big_integer.h"
-
-big_integer::big_integer() :
+bigInteger::bigInteger() :
         _numberString() {}
 
-big_integer::big_integer(std::string number) :
+bigInteger::bigInteger(std::string number) :
         _numberString(number) {
 }
 
-big_integer::big_integer(long long number) :
+bigInteger::bigInteger(long long number) :
         _numberString(std::to_string(number)) {}
 
-big_integer big_integer::add(big_integer other) {
-    big_integer b1 = other > *this ? other : *this;
-    big_integer b2 = other > *this ? *this : other;
+bigInteger bigInteger::add(bigInteger other) {
+    bigInteger b1 = other > *this ? other : *this;
+    bigInteger b2 = other > *this ? *this : other;
     if (b1.isNegative() || b2.isNegative()) {
         if (b1.isNegative() && b2.isNegative()) {
             return b1.negate().add(b2.negate()).negate();
@@ -63,20 +60,20 @@ big_integer big_integer::add(big_integer other) {
             carry = 1;
         }
     }
-    return big_integer(results);
+    return bigInteger(results);
 }
 
-big_integer big_integer::addll(const long long &other) {
-    return this->add(big_integer(other));
+bigInteger bigInteger::addll(const long long &other) {
+    return this->add(bigInteger(other));
 }
 
-big_integer big_integer::addstr(const std::string &other) {
-    return this->add(big_integer(other));
+bigInteger bigInteger::addstr(const std::string &other) {
+    return this->add(bigInteger(other));
 }
 
 
-big_integer big_integer::subtract(big_integer other) {
-    big_integer b1 = *this, b2 = other;
+bigInteger bigInteger::subtract(bigInteger other) {
+    bigInteger b1 = *this, b2 = other;
     if (b1.isNegative() || b2.isNegative()) {
         if (b1.isNegative() && b2.isNegative()) {
             return b1.negate().add(b2.negate()).negate();
@@ -98,7 +95,7 @@ big_integer big_integer::subtract(big_integer other) {
             if (t[i] != '0') break;
             t.erase(1, 1);
         }
-        return big_integer(t);
+        return bigInteger(t);
     }
 
     //This next if-block fixes the case where the digit difference is greater than 1
@@ -185,20 +182,20 @@ big_integer big_integer::subtract(big_integer other) {
         int index = results.find_first_not_of('0');
         results = results.substr(index, results.length() - 1);
     }
-    return big_integer(results);
+    return bigInteger(results);
 }
 
-big_integer big_integer::subtractll(const long long &other) {
-    return this->subtract(big_integer(other));
+bigInteger bigInteger::subtractll(const long long &other) {
+    return this->subtract(bigInteger(other));
 }
 
-big_integer big_integer::subtractstr(const std::string &other) {
-    return this->subtract(big_integer(other));
+bigInteger bigInteger::subtractstr(const std::string &other) {
+    return this->subtract(bigInteger(other));
 }
 
-big_integer big_integer::multiply(big_integer other) {
-    big_integer b1 = other > *this ? other : *this;
-    big_integer b2 = other > *this ? *this : other;
+bigInteger bigInteger::multiply(bigInteger other) {
+    bigInteger b1 = other > *this ? other : *this;
+    bigInteger b2 = other > *this ? *this : other;
     if (b1.isNegative() || b2.isNegative()) {
         if (b1.isNegative() && b2.isNegative()) {
             return b1.negate().multiply(b2.negate());
@@ -211,7 +208,7 @@ big_integer big_integer::multiply(big_integer other) {
     if (b1 == 0 || b2 == 0) return 0;
     int carry = 0;
     int zeroCounter = 0;
-    big_integer b = 0;
+    bigInteger b = 0;
 
     for (unsigned int i = 0; i < b1._numberString.size() - b2._numberString.size(); ++i) {
         b2._numberString.insert(b2._numberString.begin(), '0');
@@ -234,7 +231,7 @@ big_integer big_integer::multiply(big_integer other) {
             }
         }
         ++zeroCounter;
-        b += big_integer(rr);
+        b += bigInteger(rr);
     }
     if (b._numberString.find_first_not_of('0') != std::string::npos) {
         b.setString(b._numberString.erase(0, b._numberString.find_first_not_of('0')));
@@ -245,7 +242,7 @@ big_integer big_integer::multiply(big_integer other) {
     return b;
 }
 
-big_integer big_integer::multiplyll(const long long &other) {
+bigInteger bigInteger::multiplyll(const long long &other) {
     if (other == 0)
         return 0;
     if (other == 1)
@@ -257,15 +254,15 @@ big_integer big_integer::multiplyll(const long long &other) {
     return *this;
 }
 
-big_integer big_integer::multiplystr(const std::string &other) {
-    return this->multiply(big_integer(other));
+bigInteger bigInteger::multiplystr(const std::string &other) {
+    return this->multiply(bigInteger(other));
 }
 
-big_integer big_integer::divide(big_integer other) {
+bigInteger bigInteger::divide(bigInteger other) {
     if (other == 0) {
         std::cerr << "You cannot divide by 0!" << std::endl;
     }
-    big_integer b1 = *this, b2 = other;
+    bigInteger b1 = *this, b2 = other;
     bool sign = false;
     if (b1.isNegative() && b2.isNegative()) {
         b1.negate();
@@ -277,7 +274,7 @@ big_integer big_integer::divide(big_integer other) {
         b2.negate();
         sign = true;
     }
-    big_integer quotient = 0;
+    bigInteger quotient = 0;
     while (b1 >= b2) {
         b1 -= b2;
         ++quotient;
@@ -286,19 +283,19 @@ big_integer big_integer::divide(big_integer other) {
     return quotient;
 }
 
-big_integer big_integer::dividell(const long long &other) {
-    return this->divide(big_integer(other));
+bigInteger bigInteger::dividell(const long long &other) {
+    return this->divide(bigInteger(other));
 }
 
-big_integer big_integer::dividestr(const std::string &other) {
-    return this->divide(big_integer(other));
+bigInteger bigInteger::dividestr(const std::string &other) {
+    return this->divide(bigInteger(other));
 }
 
-big_integer big_integer::pow(int exponent) {
+bigInteger bigInteger::pow(int exponent) {
     if (exponent < 0) std::cerr << "Powers less than 0 are not supported" << std::endl;
-    if (exponent == 0) return big_integer("1");
+    if (exponent == 0) return bigInteger("1");
     if (exponent == 1) return *this;
-    big_integer result = 1, base = *this;
+    bigInteger result = 1, base = *this;
     while (exponent) {
         if (exponent & 1) {
             result *= base;
@@ -309,16 +306,16 @@ big_integer big_integer::pow(int exponent) {
     return result;
 }
 
-std::string big_integer::getString() {
+std::string bigInteger::getString() {
     return this->_numberString;
 }
 
-big_integer big_integer::setString(const std::string &newStr) {
+bigInteger bigInteger::setString(const std::string &newStr) {
     this->_numberString = newStr;
     return *this;
 }
 
-big_integer big_integer::negate() {
+bigInteger bigInteger::negate() {
     if (this->_numberString[0] == '-') {
         this->_numberString.erase(0, 1);
     } else {
@@ -327,123 +324,123 @@ big_integer big_integer::negate() {
     return *this;
 }
 
-big_integer big_integer::trimLeadingZeros() {
-    big_integer b = *this;
+bigInteger bigInteger::trimLeadingZeros() {
+    bigInteger b = *this;
     if (b._numberString.find_first_not_of('0') != std::string::npos) {
         b.setString(b._numberString.erase(0, b._numberString.find_first_not_of('0')));
     }
     return b;
 }
 
-bool big_integer::equals(const big_integer &other) {
+bool bigInteger::equals(const bigInteger &other) {
     return this->_numberString == other._numberString;
 }
 
-bool big_integer::equals(const long long &other) {
+bool bigInteger::equals(const long long &other) {
     return this->getString() == std::to_string(other);
 }
 
-bool big_integer::equals(const std::string &other) {
+bool bigInteger::equals(const std::string &other) {
     return this->getString() == other;
 }
 
-unsigned int big_integer::digits() {
+unsigned int bigInteger::digits() {
     return this->_numberString.length() - static_cast<int>(this->isNegative());
 }
 
-bool big_integer::isNegative() const {
+bool bigInteger::isNegative() const {
     return this->_numberString[0] == '-';
 }
 
-bool big_integer::isPositive() {
+bool bigInteger::isPositive() {
     return !this->isNegative();
 }
 
-bool big_integer::isEven() {
+bool bigInteger::isEven() {
     return this->_numberString[this->_numberString.length() - 1] % 2 == 0;
 }
 
-bool big_integer::isOdd() {
+bool bigInteger::isOdd() {
     return !this->isEven();
 }
 
-big_integer big_integer::abs() const {
-    return big_integer(this->_numberString.substr(static_cast<unsigned int>(this->isNegative())));
+bigInteger bigInteger::abs() const {
+    return bigInteger(this->_numberString.substr(static_cast<unsigned int>(this->isNegative())));
 }
 
-std::ostream &operator<<(std::ostream &os, const big_integer &num) {
+std::ostream &operator<<(std::ostream &os, const bigInteger &num) {
     os << num._numberString;
     return os;
 }
 
-big_integer operator+(big_integer b1, const big_integer &b2) {
+bigInteger operator+(bigInteger b1, const bigInteger &b2) {
     return b1.add(b2);
 }
 
-big_integer operator+(big_integer b1, const long long &b2) {
+bigInteger operator+(bigInteger b1, const long long &b2) {
     return b1.addll(b2);
 }
 
-big_integer operator+(big_integer b1, const std::string &b2) {
+bigInteger operator+(bigInteger b1, const std::string &b2) {
     return b1.addstr(b2);
 }
 
-big_integer operator-(big_integer b1, const big_integer &b2) {
+bigInteger operator-(bigInteger b1, const bigInteger &b2) {
     return b1.subtract(b2);
 }
 
-big_integer operator-(big_integer b1, const long long &b2) {
+bigInteger operator-(bigInteger b1, const long long &b2) {
     return b1.subtractll(b2);
 }
 
-big_integer operator-(big_integer b1, const std::string &b2) {
+bigInteger operator-(bigInteger b1, const std::string &b2) {
     return b1.subtractstr(b2);
 }
 
-big_integer operator*(big_integer b1, const big_integer &b2) {
+bigInteger operator*(bigInteger b1, const bigInteger &b2) {
     return b1.multiply(b2);
 }
 
-big_integer operator*(big_integer b1, const long long &b2) {
+bigInteger operator*(bigInteger b1, const long long &b2) {
     return b1.multiplyll(b2);
 }
 
-big_integer operator*(big_integer b1, const std::string &b2) {
+bigInteger operator*(bigInteger b1, const std::string &b2) {
     return b1.multiplystr(b2);
 }
 
-big_integer operator/(big_integer b1, const big_integer &b2) {
+bigInteger operator/(bigInteger b1, const bigInteger &b2) {
     return b1.divide(b2);
 }
 
-big_integer operator/(big_integer b1, const long long &b2) {
+bigInteger operator/(bigInteger b1, const long long &b2) {
     return b1.dividell(b2);
 }
 
-big_integer operator/(big_integer b1, const std::string &b2) {
+bigInteger operator/(bigInteger b1, const std::string &b2) {
     return b1.dividestr(b2);
 }
 
-big_integer operator^(big_integer b1, const int &b2) {
+bigInteger operator^(bigInteger b1, const int &b2) {
     return b1.pow(b2);
 }
 
-bool operator==(big_integer b1, const big_integer &b2) {
+bool operator==(bigInteger b1, const bigInteger &b2) {
     return b1.equals(b2);
 }
 
-bool operator==(big_integer b1, const long long &b2) {
+bool operator==(bigInteger b1, const long long &b2) {
     return b1.equals(b2);
 }
 
-bool operator==(big_integer b1, const std::string &b2) {
+bool operator==(bigInteger b1, const std::string &b2) {
     return b1.equals(b2);
 }
 
-bool operator>(big_integer b1, const big_integer &b2) {
+bool operator>(bigInteger b1, const bigInteger &b2) {
     if (b1.isNegative() || b2.isNegative()) {
         if (b1.isNegative() && b2.isNegative()) {
-            big_integer bt = b2;
+            bigInteger bt = b2;
             b1._numberString.erase(0, 1);
             bt._numberString.erase(0, 1);
             return b1 < bt;
@@ -452,7 +449,7 @@ bool operator>(big_integer b1, const big_integer &b2) {
         }
     }
     b1 = b1.trimLeadingZeros();
-    auto c = big_integer(b2);
+    auto c = bigInteger(b2);
     c = c.trimLeadingZeros();
     if (b1 == c) {
         return false;
@@ -472,118 +469,118 @@ bool operator>(big_integer b1, const big_integer &b2) {
     return false;
 }
 
-bool operator<(big_integer b1, const big_integer &b2) {
+bool operator<(bigInteger b1, const bigInteger &b2) {
     return !(b1 == b2) && !(b1 > b2);
 }
 
-bool operator>=(big_integer b1, const big_integer &b2) {
+bool operator>=(bigInteger b1, const bigInteger &b2) {
     return b1 > b2 || b1 == b2;
 }
 
-bool operator<=(big_integer b1, const big_integer &b2) {
+bool operator<=(bigInteger b1, const bigInteger &b2) {
     return b1 < b2 || b1 == b2;
 }
 
-unsigned int big_integer::operator[](int index) {
+unsigned int bigInteger::operator[](int index) {
     if (this->_numberString[index] == '-') {
         std::cerr << "You cannot get the negative sign from the number" << std::endl;
     }
     return static_cast<unsigned int>(this->_numberString[index] - '0');
 }
 
-big_integer &big_integer::operator=(const big_integer &other) {
+bigInteger &bigInteger::operator=(const bigInteger &other) {
     this->_numberString = other._numberString;
     return *this;
 }
 
-big_integer &big_integer::operator=(const long long &other) {
+bigInteger &bigInteger::operator=(const long long &other) {
     this->_numberString = std::to_string(other);
     return *this;
 }
 
-big_integer &big_integer::operator=(const std::string &other) {
+bigInteger &bigInteger::operator=(const std::string &other) {
     this->_numberString = other;
     return *this;
 }
 
-big_integer &big_integer::operator+=(const big_integer &other) {
+bigInteger &bigInteger::operator+=(const bigInteger &other) {
     *this = *this + other;
     return *this;
 }
 
-big_integer &big_integer::operator+=(const long long &other) {
+bigInteger &bigInteger::operator+=(const long long &other) {
     *this = *this + other;
     return *this;
 }
 
-big_integer &big_integer::operator+=(const std::string &other) {
+bigInteger &bigInteger::operator+=(const std::string &other) {
     *this = *this + other;
     return *this;
 }
 
-big_integer &big_integer::operator-=(const big_integer &other) {
+bigInteger &bigInteger::operator-=(const bigInteger &other) {
     *this = *this - other;
     return *this;
 }
 
-big_integer &big_integer::operator-=(const long long &other) {
+bigInteger &bigInteger::operator-=(const long long &other) {
     *this = *this - other;
     return *this;
 }
 
-big_integer &big_integer::operator-=(const std::string &other) {
+bigInteger &bigInteger::operator-=(const std::string &other) {
     *this = *this - other;
     return *this;
 }
 
-big_integer &big_integer::operator*=(const big_integer &other) {
+bigInteger &bigInteger::operator*=(const bigInteger &other) {
     *this = *this * other;
     return *this;
 }
 
-big_integer &big_integer::operator*=(const long long &other) {
+bigInteger &bigInteger::operator*=(const long long &other) {
     *this = *this * other;
     return *this;
 }
 
-big_integer &big_integer::operator*=(const std::string &other) {
+bigInteger &bigInteger::operator*=(const std::string &other) {
     *this = *this * other;
     return *this;
 }
 
-big_integer &big_integer::operator/=(const big_integer &other) {
+bigInteger &bigInteger::operator/=(const bigInteger &other) {
     *this = *this / other;
     return *this;
 }
 
-big_integer &big_integer::operator/=(const long long &other) {
+bigInteger &bigInteger::operator/=(const long long &other) {
     *this = *this / other;
     return *this;
 }
 
-big_integer &big_integer::operator/=(const std::string &other) {
+bigInteger &bigInteger::operator/=(const std::string &other) {
     *this = *this / other;
     return *this;
 }
 
-big_integer &big_integer::operator++() {
-    *this += big_integer("1");
+bigInteger &bigInteger::operator++() {
+    *this += bigInteger("1");
     return *this;
 }
 
-big_integer &big_integer::operator--() {
-    *this -= big_integer("1");
+bigInteger &bigInteger::operator--() {
+    *this -= bigInteger("1");
     return *this;
 }
 
-big_integer big_integer::operator++(int) {
-    big_integer t(this->getString());
+bigInteger bigInteger::operator++(int) {
+    bigInteger t(this->getString());
     ++(*this);
     return t;
 }
 
-big_integer big_integer::operator--(int) {
-    big_integer t(this->getString());
+bigInteger bigInteger::operator--(int) {
+    bigInteger t(this->getString());
     --(*this);
     return t;
 }

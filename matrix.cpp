@@ -6,7 +6,7 @@
 #include <list>
 
 matrix::matrix(std::string matrix[]) {
-    for (int j = 0; j < 9; ++j) matrixContent[j / 3][j % 3] = big_integer(matrix[j]);
+    for (int j = 0; j < 9; ++j) matrixContent[j / 3][j % 3] = bigInteger(matrix[j]);
 }
 
 const matrix operator+(matrix &left, matrix &right) {
@@ -27,14 +27,14 @@ const matrix operator*(const matrix &left, const matrix &right) {
     matrix result;
     for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j) {
-            big_integer element(0);
+            bigInteger element(0);
             for (int k = 0; k < 3; ++k) element += left.matrixContent[i][k] * right.matrixContent[k][j];
             result.matrixContent[i][j] = element;
         }
     return result;
 }
 
-const matrix operator*(const big_integer &bigNum, const matrix &right) {
+const matrix operator*(const bigInteger &bigNum, const matrix &right) {
     matrix result;
     for (int i = 0; i < 9; ++i) result.matrixContent[i / 3][i % 3] = bigNum * right.matrixContent[i / 3][i % 3];
     return result;
@@ -115,7 +115,7 @@ matrix eval(std::string expression, const std::map<std::string, matrix> &map) {
             if ((elements1[j - 1][0] >= 48 && elements1[j - 1][0] <= 57) ||
                 (elements1[j - 1][0] == '-' && elements1[j - 1][1] >= 48 &&
                  elements1[j - 1][1] <= 57))
-                a = big_integer(elements1[j - 1]) * customMap.at(elements1[j + 1]);
+                a = bigInteger(elements1[j - 1]) * customMap.at(elements1[j + 1]);
             else
                 a = customMap.at(elements1[j - 1]) * customMap.at(elements1[j + 1]);
             elements2.pop_back();

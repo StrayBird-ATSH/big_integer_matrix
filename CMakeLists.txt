@@ -3,4 +3,4 @@ project(big_integer_matrix)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(big_integer_matrix main.cpp matrix.cpp big_integer.cpp)
+add_executable(big_integer_matrix main.cpp matrix.cpp bigInteger.cpp)

@@ -5,7 +5,7 @@
 #ifndef BIG_NUM_MATRIX_H
 #define BIG_NUM_MATRIX_H
 
-#include "big_integer.h"
+#include "bigInteger.h"
 #include <map>
 
 class matrix {
@@ -22,7 +22,7 @@ public:
 
     friend const matrix operator*(const matrix &left, const matrix &right);
 
-    friend const matrix operator*(const big_integer &bigNum, const matrix &right);
+    friend const matrix operator*(const bigInteger &bigNum, const matrix &right);
 
     friend const matrix operator~(const matrix &right);
 
@@ -33,7 +33,7 @@ public:
     friend std::ostream &operator<<(std::ostream &stream, const matrix &matrix1);
 
 private:
-    big_integer matrixContent[3][3];
+    bigInteger matrixContent[3][3];
 };
 
 matrix eval(std::string expression, const std::map<std::string, matrix> &map);
