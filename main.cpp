@@ -144,13 +144,9 @@ int main() {
         std::cout << line << std::endl;
         result.push_back(computeExpression(map, line));
     }
-    fin.clear();
     fin.close();
 
-    std::ofstream ofile;
-    ofile.open("result.out");
-    for (auto &matrix:result)
-        ofile << matrix;
-    ofile.close();
-    std::cout << "BigNumber ran successfully." << std::endl;
+    std::ofstream output("result.out");
+    for (auto &matrix:result) output << matrix;
+    output.close();
 }
