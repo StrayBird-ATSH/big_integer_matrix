@@ -78,7 +78,7 @@ matrix eval(std::string expression, const std::map<std::string, matrix> &map) {
                 elements.push_back(expression.substr(previousPosition, 1));
                 previousPosition++;
             } else {
-                if (character == '~') elements.push_back("~");
+                if (character == '~') elements.emplace_back("~");
                 else {
                     elements.push_back(expression.substr(previousPosition, i - previousPosition));
                     elements.push_back(expression.substr(i, 1));
@@ -89,11 +89,10 @@ matrix eval(std::string expression, const std::map<std::string, matrix> &map) {
     }
     elements.push_back(expression.substr(previousPosition));
 //    Process negative numbers
-    int k = 0;
-    if (elements[k] == "-" && (elements[k + 1][0] >= 48 && elements[k + 1][0] <= 57)) {
-        auto iterator = elements.begin() + k;
+    if (elements[0] == "-" && (elements[1][0] >= 48 && elements[1][0] <= 57)) {
+        auto iterator = elements.begin();
         elements.erase(iterator);
-        elements[k] = "-" + elements[k];
+        elements[0] = "-" + elements[0];
     }
 
 //    Process ~ symbol
