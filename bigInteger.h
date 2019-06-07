@@ -74,8 +74,6 @@ public:
     bool equals(const bigInteger &other);
 
     bool equals(const long long &other);
-
-    bool equals(const std::string &other);
     //@}
 
     /**
@@ -132,8 +130,6 @@ public:
     friend bool operator==(bigInteger b1, const bigInteger &b2);
 
     friend bool operator==(bigInteger b1, const long long &b2);
-
-    friend bool operator==(bigInteger b1, const std::string &b2);
     //@}
 
     /**
@@ -152,22 +148,6 @@ public:
      */
     friend bool operator<(bigInteger b1, const bigInteger &b2);
 
-    /**
-     * Greater-than or equal-to operator
-     * @param b1 - The current instance
-     * @param b2 - Another BigNumber
-     * @return True if current instance is greater or equal, otherwise false
-     */
-    friend bool operator>=(bigInteger b1, const bigInteger &b2);
-
-    /**
-     * Less-than or equal-to operator
-     * @param b1 - The current instance
-     * @param b2 - Another BigNumber
-     * @return True if current instance is less or equal, otherwise false
-     */
-    friend bool operator<=(bigInteger b1, const bigInteger &b2);
-
     //@{
     /**
      * Assignment operator
@@ -176,9 +156,6 @@ public:
      */
     bigInteger &operator=(const bigInteger &other);
 
-    bigInteger &operator=(const long long &other);
-
-    bigInteger &operator=(const std::string &other);
     //@}
 
     //@{

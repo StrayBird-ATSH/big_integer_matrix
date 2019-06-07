@@ -236,10 +236,6 @@ bool bigInteger::equals(const long long &other) {
     return this->getString() == std::to_string(other);
 }
 
-bool bigInteger::equals(const std::string &other) {
-    return this->getString() == other;
-}
-
 bool bigInteger::isNegative() const {
     return this->_numberString[0] == '-';
 }
@@ -266,10 +262,6 @@ bool operator==(bigInteger b1, const bigInteger &b2) {
 }
 
 bool operator==(bigInteger b1, const long long &b2) {
-    return b1.equals(b2);
-}
-
-bool operator==(bigInteger b1, const std::string &b2) {
     return b1.equals(b2);
 }
 
@@ -309,14 +301,6 @@ bool operator<(bigInteger b1, const bigInteger &b2) {
     return !(b1 == b2) && !(b1 > b2);
 }
 
-bool operator>=(bigInteger b1, const bigInteger &b2) {
-    return b1 > b2 || b1 == b2;
-}
-
-bool operator<=(bigInteger b1, const bigInteger &b2) {
-    return b1 < b2 || b1 == b2;
-}
-
 unsigned int bigInteger::operator[](int index) {
     if (this->_numberString[index] == '-') {
         std::cerr << "You cannot get the negative sign from the number" << std::endl;
@@ -326,16 +310,6 @@ unsigned int bigInteger::operator[](int index) {
 
 bigInteger &bigInteger::operator=(const bigInteger &other) {
     this->_numberString = other._numberString;
-    return *this;
-}
-
-bigInteger &bigInteger::operator=(const long long &other) {
-    this->_numberString = std::to_string(other);
-    return *this;
-}
-
-bigInteger &bigInteger::operator=(const std::string &other) {
-    this->_numberString = other;
     return *this;
 }
 
