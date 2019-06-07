@@ -96,18 +96,17 @@ bigInteger bigInteger::subtract(const bigInteger other) {
     }
     if (takeOffOne) {
         std::string number;
-        for (int j = b1._numberString.length() - b2._numberString.length() - 1; j >= 0; --j) {
+        for (int j = b1._numberString.length() - b2._numberString.length() - 1; j >= 0; --j)
             if (b1._numberString[j] == '0') {
                 number += "0";
                 continue;
             } else {
                 number.insert(number.begin(), b1._numberString[j]);
-                int t = strtol(number.c_str(), NULL, 10);
+                int t = strtol(number.c_str(), nullptr, 10);
                 --t;
                 b1._numberString.replace(0, number.size(), std::to_string(t));
                 break;
             }
-        }
     }
     while (i >= 0) {
         std::stringstream ss;
@@ -137,22 +136,17 @@ bigInteger bigInteger::multiply(const bigInteger other) {
     bigInteger b1 = other > *this ? other : *this;
     bigInteger b2 = other > *this ? *this : other;
     if (b1.isNegative() || b2.isNegative()) {
-        if (b1.isNegative() && b2.isNegative()) {
-            return b1.negate().multiply(b2.negate());
-        } else if (b1.isNegative() && !b2.isNegative()) {
-            return b1.negate().multiply(b2).negate();
-        } else {
-            return b2.negate().multiply(b1).negate();
-        }
+        if (b1.isNegative() && b2.isNegative()) return b1.negate().multiply(b2.negate());
+        else if (b1.isNegative() && !b2.isNegative()) return b1.negate().multiply(b2).negate();
+        else return b2.negate().multiply(b1).negate();
     }
     if (b1 == 0 || b2 == 0) return 0;
     int carry = 0;
     int zeroCounter = 0;
     bigInteger b = 0;
 
-    for (unsigned int i = 0; i < b1._numberString.size() - b2._numberString.size(); ++i) {
+    for (unsigned int i = 0; i < b1._numberString.size() - b2._numberString.size(); ++i)
         b2._numberString.insert(b2._numberString.begin(), '0');
-    }
     for (long long int i = (b2._numberString.size() - 1); i >= 0; --i) {
         std::string rr;
         for (long long int j = int(b1._numberString.size() - 1); j >= 0; --j) {
@@ -161,24 +155,17 @@ bigInteger bigInteger::multiply(const bigInteger other) {
             if (val > 9 && j != 0) {
                 carry = val / 10;
                 rr.insert(0, std::to_string(val % 10));
-            } else {
-                rr.insert(0, std::to_string(val));
-            }
+            } else rr.insert(0, std::to_string(val));
         }
-        if (zeroCounter > 0) {
-            for (int x = 0; x < zeroCounter; ++x) {
-                rr.append("0");
-            }
-        }
+        if (zeroCounter > 0) for (int x = 0; x < zeroCounter; ++x) rr.append("0");
         ++zeroCounter;
         b += bigInteger(rr);
     }
-    if (b._numberString.find_first_not_of('0') != std::string::npos) {
+    if (b._numberString.find_first_not_of('0') != std::string::npos)
         b.setString(b._numberString.erase(0, b._numberString.find_first_not_of('0')));
-    } else {
+    else
         //In the case of all 0's, we only want to return one of them
         b.setString("0");
-    }
     return b;
 }
 
@@ -192,19 +179,17 @@ bigInteger bigInteger::setString(const std::string &newStr) {
 }
 
 bigInteger bigInteger::negate() {
-    if (this->_numberString[0] == '-') {
+    if (this->_numberString[0] == '-')
         this->_numberString.erase(0, 1);
-    } else {
+    else
         this->_numberString.insert(this->_numberString.begin(), '-');
-    }
     return *this;
 }
 
 bigInteger bigInteger::trimLeadingZeros() {
     bigInteger b = *this;
-    if (b._numberString.find_first_not_of('0') != std::string::npos) {
+    if (b._numberString.find_first_not_of('0') != std::string::npos)
         b.setString(b._numberString.erase(0, b._numberString.find_first_not_of('0')));
-    }
     return b;
 }
 
@@ -252,28 +237,19 @@ bool operator>(bigInteger b1, const bigInteger &b2) {
             b1._numberString.erase(0, 1);
             bt._numberString.erase(0, 1);
             return b1 < bt;
-        } else {
-            return !(b1.isNegative() && !b2.isNegative());
-        }
+        } else return !(b1.isNegative() && !b2.isNegative());
     }
     b1 = b1.trimLeadingZeros();
     auto c = bigInteger(b2);
     c = c.trimLeadingZeros();
-    if (b1 == c) {
-        return false;
-    }
-    if (b1._numberString.size() > c._numberString.size()) {
-        return true;
-    } else if (c._numberString.size() > b1._numberString.size()) {
-        return false;
-    } else {
+    if (b1 == c) return false;
+    if (b1._numberString.size() > c._numberString.size()) return true;
+    else if (c._numberString.size() > b1._numberString.size()) return false;
+    else
         for (unsigned int i = 0; i < b1._numberString.size(); ++i) {
-            if (b1[i] == static_cast<unsigned int>(c._numberString[i] - '0')) {
-                continue;
-            }
+            if (b1[i] == static_cast<unsigned int>(c._numberString[i] - '0')) continue;
             return b1[i] > static_cast<unsigned int>(c._numberString[i] - '0');
         }
-    }
     return false;
 }
 
@@ -282,9 +258,7 @@ bool operator<(bigInteger &b1, const bigInteger &b2) {
 }
 
 unsigned int bigInteger::operator[](int index) {
-    if (this->_numberString[index] == '-') {
-        std::cerr << "You cannot get the negative sign from the number" << std::endl;
-    }
+    if (this->_numberString[index] == '-') std::cerr << "You cannot get the negative sign from the number" << std::endl;
     return static_cast<unsigned int>(this->_numberString[index] - '0');
 }
 

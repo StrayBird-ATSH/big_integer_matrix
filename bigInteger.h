@@ -10,14 +10,13 @@
  */
 class bigInteger {
 public:
-
-    bigInteger();
-
     //@{
     /**
      * BigNumber constructor
      * @param number - The initial value of the BigNumber
      */
+    bigInteger();
+
     explicit bigInteger(std::string number);
 
     bigInteger(long long number);
