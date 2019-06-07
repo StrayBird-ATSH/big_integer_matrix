@@ -1,10 +1,3 @@
-////////////////////////////
-//To make sure assert works:
-#ifdef NDEBUG
-#undef NDEBUG
-#endif
-////////////////////////////
-
 #include "matrix.h"
 #include <fstream>
 #include <sstream>
