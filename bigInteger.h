@@ -18,7 +18,7 @@ public:
      * BigNumber constructor
      * @param number - The initial value of the BigNumber
      */
-    bigInteger(std::string number);
+    explicit bigInteger(std::string number);
 
     bigInteger(long long number);
     //@}

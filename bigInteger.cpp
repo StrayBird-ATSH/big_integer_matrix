@@ -12,26 +12,19 @@ bigInteger bigInteger::add(const bigInteger other) {
     bigInteger b1 = other > *this ? other : *this;
     bigInteger b2 = other > *this ? *this : other;
     if (b1.isNegative() || b2.isNegative()) {
-        if (b1.isNegative() && b2.isNegative()) {
-            return b1.negate().add(b2.negate()).negate();
-        } else if (b1.isNegative() && !b2.isNegative()) {
-            return b1.negate().subtract(b2).negate();
-        } else {
-            return b2.negate().subtract(b1).negate();
-        }
+        if (b1.isNegative() && b2.isNegative()) return b1.negate().add(b2.negate()).negate();
+        else if (b1.isNegative() && !b2.isNegative()) return b1.negate().subtract(b2).negate();
+        else return b2.negate().subtract(b1).negate();
     }
     std::string results;
     int carry = 0;
     int diff = int(b1._numberString.size() - b2._numberString.size());
-    for (int i = 0; i < diff; ++i) {
-        b2._numberString.insert(b2._numberString.begin(), '0');
-    }
+    for (int i = 0; i < diff; ++i) b2._numberString.insert(b2._numberString.begin(), '0');
     for (int i = int(b1._numberString.size() - 1); i >= 0; --i) {
         int sum = (b1._numberString[i] - '0') + (b2._numberString[i] - '0') + carry;
         carry = 0;
-        if (sum <= 9 || i == 0) {
-            results.insert(0, std::to_string(sum));
-        } else {
+        if (sum <= 9 || i == 0) results.insert(0, std::to_string(sum));
+        else {
             results.insert(0, std::to_string(sum % 10));
             carry = 1;
         }
@@ -43,13 +36,9 @@ bigInteger bigInteger::add(const bigInteger other) {
 bigInteger bigInteger::subtract(const bigInteger other) {
     bigInteger b1 = *this, b2 = other;
     if (b1.isNegative() || b2.isNegative()) {
-        if (b1.isNegative() && b2.isNegative()) {
-            return b1.negate().add(b2.negate()).negate();
-        } else if (b1.isNegative() && !b2.isNegative()) {
-            return b1.negate().add(b2).negate();
-        } else {
-            return b2.negate().add(b1);
-        }
+        if (b1.isNegative() && b2.isNegative()) return b1.negate().add(b2.negate()).negate();
+        else if (b1.isNegative() && !b2.isNegative()) return b1.negate().add(b2).negate();
+        else return b2.negate().add(b1);
     }
     std::string results;
     int n = 0, p = 0;
@@ -69,11 +58,9 @@ bigInteger bigInteger::subtract(const bigInteger other) {
     //This next if-block fixes the case where the digit difference is greater than 1
     //100 - 5 is an example. This code adds 0's to make it, for example, 100 - 05, which
     //allows the rest of the subtraction code to work.
-    if (b1._numberString.size() - b2.getString().size() > 1) {
-        for (unsigned long i = 0; i < b1._numberString.size() - b2.getString().size() - 1; ++i) {
+    if (b1._numberString.size() - b2.getString().size() > 1)
+        for (unsigned long i = 0; i < b1._numberString.size() - b2.getString().size() - 1; ++i)
             b2._numberString.insert(b2._numberString.begin(), '0');
-        }
-    }
     int i = int(b1._numberString.size() - 1);
     for (int j = int(b2._numberString.size() - 1); j >= 0; --j) {
         if (((b1._numberString[i] - '0') < (b2._numberString[j] - '0')) && i > 0) {
@@ -100,16 +87,9 @@ bigInteger bigInteger::subtract(const bigInteger other) {
             shouldBeTen = false;
         }
         std::stringstream ss;
-        if (((b1._numberString[i] - '0') == (b2._numberString[j] - '0'))) {
-            ss << "0";
-        } else {
-            if (n <= 0) {
-                ss << ((b1._numberString[i] - '0') - (b2._numberString[j] - '0'));
-            } else {
-                ss << (n - (b2._numberString[j] - '0'));
-            }
-        }
-
+        if (((b1._numberString[i] - '0') == (b2._numberString[j] - '0'))) ss << "0";
+        else if (n <= 0) ss << ((b1._numberString[i] - '0') - (b2._numberString[j] - '0'));
+        else ss << (n - (b2._numberString[j] - '0'));
         results.insert(0, ss.str());
         --i;
         n = 0;
