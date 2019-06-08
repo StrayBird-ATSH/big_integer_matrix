@@ -2,19 +2,36 @@
 #include <sstream>
 #include <stack>
 
-bigInteger::bigInteger() : number() {}
-
+/**
+ * Standard constructor of the class.
+ * The string argument is directly moved to the field as the construction process.
+ * @code{move} method is used to avoid copying and to enhance performance
+ * @param number The string representation of the number
+ */
 bigInteger::bigInteger(std::string number) : number(std::move(number)) {}
 
-std::string bigInteger::getString() {
+/**
+ * Getter of the string representation of the number
+ * @return The string representation of the number
+ */
+std::string bigInteger::getNumber() {
     return this->number;
 }
 
-bigInteger bigInteger::setString(const std::string &newStr) {
+/**
+ * The method to change the current number's value
+ * @param newStr The desired value of the number
+ * @return The modified number as a big integer object
+ */
+bigInteger bigInteger::setNumber(const std::string &newStr) {
     this->number = newStr;
     return *this;
 }
 
+/**
+ * Detects if the number is a negative number and negates it.
+ * @return The modified number as a big integer object
+ */
 bigInteger bigInteger::negate() {
     if (this->number[0] == '-')
         this->number.erase(0, 1);
@@ -23,37 +40,53 @@ bigInteger bigInteger::negate() {
     return *this;
 }
 
+/**
+ * The private auxiliary method that trims the leading zeros of the
+ * big integer
+ * @return The modified number as a big integer object
+ */
 bigInteger bigInteger::trimLeadingZeros() {
     bigInteger b = *this;
     if (b.number.find_first_not_of('0') != std::string::npos)
-        b.setString(b.number.erase(0, b.number.find_first_not_of('0')));
+        b.setNumber(b.number.erase(0, b.number.find_first_not_of('0')));
     return b;
 }
 
-bool bigInteger::equals(const long long &other) {
-    return this->getString() == std::to_string(other);
-}
-
+/**
+ * The private auxiliary method that decides whether a number is negative
+ * @return true if the number is negative and false otherwise
+ */
 bool bigInteger::isNegative() const {
     return this->number[0] == '-';
 }
 
+/**
+ * The method is used to output the object as a stream.
+ * This function is used in the process of printing this object.
+ * @param os Any type of output stream object
+ * @param num The big integer object to be output
+ * @return The modified stream
+ */
 std::ostream &operator<<(std::ostream &os, const bigInteger &num) {
     os << num.number;
     return os;
 }
 
-bigInteger operator+(const bigInteger b4, const bigInteger &b3) {
-    bigInteger b1 = b4 > b3 ? b4 : b3;
-    bigInteger b2 = b4 > b3 ? b3 : b4;
+/**
+ * The implementation of the addition of two big integers.
+ * @param left One of the adding object
+ * @param right One of the adding object
+ * @return The result of the addition as a big integer object
+ */
+bigInteger operator+(const bigInteger left, const bigInteger &right) {
+    bigInteger b1 = left > right ? left : right, b2 = left > right ? right : left;
     if (b1.isNegative() || b2.isNegative()) {
         if (b1.isNegative() && b2.isNegative()) return (b1.negate() + b2.negate()).negate();
         else if (b1.isNegative() && !b2.isNegative()) return (b1.negate() - b2).negate();
         else return (b2.negate() - b1).negate();
     }
     std::string results;
-    int carry = 0;
-    int diff = int(b1.number.size() - b2.number.size());
+    int carry = 0, diff = int(b1.number.size() - b2.number.size());
     for (int i = 0; i < diff; ++i) b2.number.insert(b2.number.begin(), '0');
     for (int i = int(b1.number.size() - 1); i >= 0; --i) {
         int sum = (b1.number[i] - '0') + (b2.number[i] - '0') + carry;
@@ -67,36 +100,40 @@ bigInteger operator+(const bigInteger b4, const bigInteger &b3) {
     return bigInteger(results);
 }
 
-bigInteger operator-(bigInteger b3, const bigInteger &b4) {
-    bigInteger b1 = b3, b2 = b4;
-    if (b1.isNegative() || b2.isNegative()) {
-        if (b1.isNegative() && b2.isNegative()) return (b1.negate() + b2.negate()).negate();
-        else if (b1.isNegative() && !b2.isNegative()) return (b1.negate() + b2).negate();
-        else return b2.negate() + b1;
+/**
+ * The implementation method of the subtraction operation.
+ * @param minuend The minuend
+ * @param subtrahend The subtrahend
+ * @return The result of the subtraction as a big integer object
+ */
+bigInteger operator-(bigInteger minuend, const bigInteger &subtrahend) {
+    bigInteger b2 = subtrahend;
+    if (minuend.isNegative() || b2.isNegative()) {
+        if (minuend.isNegative() && b2.isNegative()) return (minuend.negate() + b2.negate()).negate();
+        else if (minuend.isNegative() && !b2.isNegative()) return (minuend.negate() + b2).negate();
+        else return b2.negate() + minuend;
     }
     std::string results;
     int n = 0, p = 0;
-    bool takeOffOne = false;
-    bool shouldBeTen = false;
-
-    if (b1 < b2) {
-        std::string t = (b2 - b1).negate().getString();
+    bool takeOffOne = false, shouldBeTen = false;
+    if (minuend < b2) {
+        std::string t = (b2 - minuend).negate().getNumber();
         for (unsigned int i = 1; i < t.length(); ++i) {
             if (t[i] != '0') break;
             t.erase(1, 1);
         }
         return bigInteger(t);
     }
-    if (b1.number.size() - b2.getString().size() > 1)
-        for (unsigned long i = 0; i < b1.number.size() - b2.getString().size() - 1; ++i)
+    if (minuend.number.size() - b2.getNumber().size() > 1)
+        for (unsigned long i = 0; i < minuend.number.size() - b2.getNumber().size() - 1; ++i)
             b2.number.insert(b2.number.begin(), '0');
-    int i = int(b1.number.size() - 1);
+    int i = int(minuend.number.size() - 1);
     for (int j = int(b2.number.size() - 1); j >= 0; --j) {
-        if (((b1.number[i] - '0') < (b2.number[j] - '0')) && i > 0) {
-            n = char((b1.number[i] - '0') + 10);
+        if (((minuend.number[i] - '0') < (b2.number[j] - '0')) && i > 0) {
+            n = char((minuend.number[i] - '0') + 10);
             takeOffOne = true;
-            if (j > 0 || b1.number[i - 1] != '0') {
-                p = char((b1.number[i - 1] - '0') - 1);
+            if (j > 0 || minuend.number[i - 1] != '0') {
+                p = char((minuend.number[i - 1] - '0') - 1);
                 if (p == -1) {
                     p = 9;
                     shouldBeTen = true;
@@ -105,19 +142,19 @@ bigInteger operator-(bigInteger b3, const bigInteger &b4) {
             }
             if (shouldBeTen) {
                 int index = i - 1;
-                for (int a = i - 1; (b1.number[a] - '0') == 0; --a) {
-                    b1.number[a] = static_cast<char>(p + '0');
+                for (int a = i - 1; (minuend.number[a] - '0') == 0; --a) {
+                    minuend.number[a] = static_cast<char>(p + '0');
                     --index;
                 }
-                int t = (b1.number[index] - '0') - 1;
-                b1.number[index] = static_cast<char>(t + '0');
+                int t = (minuend.number[index] - '0') - 1;
+                minuend.number[index] = static_cast<char>(t + '0');
             }
-            b1.number[i - 1] = static_cast<char>(p + '0');
+            minuend.number[i - 1] = static_cast<char>(p + '0');
             shouldBeTen = false;
         }
         std::stringstream ss;
-        if (((b1.number[i] - '0') == (b2.number[j] - '0'))) ss << "0";
-        else if (n <= 0) ss << ((b1.number[i] - '0') - (b2.number[j] - '0'));
+        if (((minuend.number[i] - '0') == (b2.number[j] - '0'))) ss << "0";
+        else if (n <= 0) ss << ((minuend.number[i] - '0') - (b2.number[j] - '0'));
         else ss << (n - (b2.number[j] - '0'));
         results.insert(0, ss.str());
         --i;
@@ -125,27 +162,27 @@ bigInteger operator-(bigInteger b3, const bigInteger &b4) {
     }
     if (takeOffOne) {
         std::string number;
-        for (int j = b1.number.length() - b2.number.length() - 1; j >= 0; --j)
-            if (b1.number[j] == '0') {
+        for (int j = minuend.number.length() - b2.number.length() - 1; j >= 0; --j)
+            if (minuend.number[j] == '0') {
                 number += "0";
                 continue;
             } else {
-                number.insert(number.begin(), b1.number[j]);
+                number.insert(number.begin(), minuend.number[j]);
                 int t = strtol(number.c_str(), nullptr, 10);
                 --t;
-                b1.number.replace(0, number.size(), std::to_string(t));
+                minuend.number.replace(0, number.size(), std::to_string(t));
                 break;
             }
     }
     while (i >= 0) {
         std::stringstream ss;
         if (i == 0) {
-            if (b1.number[i] - '0' != 0) {
-                ss << (b1.number[i] - '0');
+            if (minuend.number[i] - '0' != 0) {
+                ss << (minuend.number[i] - '0');
                 results.insert(0, ss.str());
             }
         } else {
-            ss << (b1.number[i] - '0');
+            ss << (minuend.number[i] - '0');
             results.insert(0, ss.str());
         }
 
@@ -159,9 +196,15 @@ bigInteger operator-(bigInteger b3, const bigInteger &b4) {
     return bigInteger(results);
 }
 
-bigInteger operator*(bigInteger b3, const bigInteger &b4) {
-    bigInteger b1 = b3 > b4 ? b3 : b4;
-    bigInteger b2 = b3 > b4 ? b4 : b3;
+/**
+ * The implementation method of the multiplication operation.
+ * @param lMultiplier One of the multipliers
+ * @param rMultiplier One of the multipliers
+ * @return The result of the subtraction as a big integer object
+ */
+bigInteger operator*(bigInteger lMultiplier, const bigInteger &rMultiplier) {
+    bigInteger b1 = lMultiplier > rMultiplier ? lMultiplier : rMultiplier;
+    bigInteger b2 = lMultiplier > rMultiplier ? rMultiplier : lMultiplier;
     if (b1.isNegative() || b2.isNegative()) {
         if (b1.isNegative() && b2.isNegative()) return b1.negate() * b2.negate();
         else if (b1.isNegative() && !b2.isNegative()) return (b1.negate() * b2).negate();
@@ -189,8 +232,8 @@ bigInteger operator*(bigInteger b3, const bigInteger &b4) {
         b += bigInteger(rr);
     }
     if (b.number.find_first_not_of('0') != std::string::npos)
-        b.setString(b.number.erase(0, b.number.find_first_not_of('0')));
-    else b.setString("0");
+        b.setNumber(b.number.erase(0, b.number.find_first_not_of('0')));
+    else b.setNumber("0");
     return b;
 }
 
@@ -199,7 +242,7 @@ bool operator==(const bigInteger b1, const bigInteger &b2) {
 }
 
 bool operator==(bigInteger b1, const long long &b2) {
-    return b1.equals(b2);
+    return b1 == bigInteger(std::to_string(b2));
 }
 
 bool operator>(bigInteger b1, const bigInteger &b2) {
@@ -230,7 +273,6 @@ bool operator<(bigInteger &b1, const bigInteger &b2) {
 }
 
 unsigned int bigInteger::operator[](int index) {
-    if (this->number[index] == '-') std::cerr << "You cannot get the negative sign from the number" << std::endl;
     return static_cast<unsigned int>(this->number[index] - '0');
 }
 
