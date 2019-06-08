@@ -1,10 +1,6 @@
 #include "matrix.h"
 #include <list>
 
-/**
- *
- * @param matrix
- */
 matrix::matrix(std::string matrix[]) {
     for (int j = 0; j < 9; ++j) matrixContent[j / 3][j % 3] = bigInteger(matrix[j]);
 }

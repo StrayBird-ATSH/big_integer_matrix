@@ -15,6 +15,7 @@
  * However, some other manipulations are currently realized for the sake of
  * internal usage. The three operators are overloading the system operators
  * +, -, and * separately.
+ *
  * It should be noted that * operator has two different functions. They are
  * matrix multiply matrix and big integer multiply matrix separately.
  *
