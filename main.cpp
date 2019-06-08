@@ -3,7 +3,7 @@
 #include <sstream>
 
 int main() {
-    std::ifstream infile("testcase_matrix.in");
+    std::ifstream infile("matrix.in");
     std::string count;
     getline(infile, count);
     std::stringstream stream(count);
@@ -20,7 +20,7 @@ int main() {
     infile.close();
 
     std::vector<matrix> result;
-    std::ifstream fin("testcase_expression.in");
+    std::ifstream fin("expression.in");
     char line[1024];
     while (fin.getline(line, sizeof(line))) {
         std::cout << line << std::endl;
