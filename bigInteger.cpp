@@ -32,10 +32,6 @@ bigInteger bigInteger::trimLeadingZeros() {
     return b;
 }
 
-bool bigInteger::equals(const bigInteger &other) {
-    return this->_numberString == other._numberString;
-}
-
 bool bigInteger::equals(const long long &other) {
     return this->getString() == std::to_string(other);
 }
@@ -210,7 +206,7 @@ bigInteger operator*(bigInteger b3, const bigInteger &b4) {
 }
 
 bool operator==(bigInteger b1, const bigInteger &b2) {
-    return b1.equals(b2);
+    return b1._numberString == b2._numberString;
 }
 
 bool operator==(bigInteger b1, const long long &b2) {

@@ -49,8 +49,6 @@ public:
      * @param other - The other BigNumber
      * @return True if equal, otherwise false
      */
-    bool equals(const bigInteger &other);
-
     bool equals(const long long &other);
     //@}
 
