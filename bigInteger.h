@@ -23,13 +23,6 @@ public:
     //@}
 
     /**
-     * Subtract another BigNumber from the current instance
-     * @param other - The other BigNumber
-     * @return The difference of the two BigNumbers
-     */
-    bigInteger subtract(bigInteger other);
-
-    /**
      * Multiply the current instance by another BigNumber
      * @param other - The other BigNumber
      * @return The product of the two BigNumbers

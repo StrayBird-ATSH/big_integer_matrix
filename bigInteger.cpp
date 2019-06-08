@@ -8,105 +8,6 @@ bigInteger::bigInteger(std::string number) : _numberString(number) {}
 
 bigInteger::bigInteger(long long number) : _numberString(std::to_string(number)) {}
 
-bigInteger bigInteger::subtract(const bigInteger other) {
-    bigInteger b1 = *this, b2 = other;
-    if (b1.isNegative() || b2.isNegative()) {
-        if (b1.isNegative() && b2.isNegative()) return (b1.negate() + b2.negate()).negate();
-        else if (b1.isNegative() && !b2.isNegative()) return (b1.negate() + b2).negate();
-        else return b2.negate() + b1;
-    }
-    std::string results;
-    int n = 0, p = 0;
-    bool takeOffOne = false;
-    bool shouldBeTen = false;
-
-    if (b1 < b2) {
-        //Negative answer
-        std::string t = b2.subtract(*this).negate().getString();
-        for (unsigned int i = 1; i < t.length(); ++i) {
-            if (t[i] != '0') break;
-            t.erase(1, 1);
-        }
-        return bigInteger(t);
-    }
-
-    //This next if-block fixes the case where the digit difference is greater than 1
-    //100 - 5 is an example. This code adds 0's to make it, for example, 100 - 05, which
-    //allows the rest of the subtraction code to work.
-    if (b1._numberString.size() - b2.getString().size() > 1)
-        for (unsigned long i = 0; i < b1._numberString.size() - b2.getString().size() - 1; ++i)
-            b2._numberString.insert(b2._numberString.begin(), '0');
-    int i = int(b1._numberString.size() - 1);
-    for (int j = int(b2._numberString.size() - 1); j >= 0; --j) {
-        if (((b1._numberString[i] - '0') < (b2._numberString[j] - '0')) && i > 0) {
-            n = char((b1._numberString[i] - '0') + 10);
-            takeOffOne = true;
-            if (j > 0 || b1._numberString[i - 1] != '0') {
-                p = char((b1._numberString[i - 1] - '0') - 1);
-                if (p == -1) {
-                    p = 9;
-                    shouldBeTen = true;
-                }
-                takeOffOne = false;
-            }
-            if (shouldBeTen) {
-                int index = i - 1;
-                for (int a = i - 1; (b1._numberString[a] - '0') == 0; --a) {
-                    b1._numberString[a] = static_cast<char>(p + '0');
-                    --index;
-                }
-                int t = (b1._numberString[index] - '0') - 1;
-                b1._numberString[index] = static_cast<char>(t + '0');
-            }
-            b1._numberString[i - 1] = static_cast<char>(p + '0');
-            shouldBeTen = false;
-        }
-        std::stringstream ss;
-        if (((b1._numberString[i] - '0') == (b2._numberString[j] - '0'))) ss << "0";
-        else if (n <= 0) ss << ((b1._numberString[i] - '0') - (b2._numberString[j] - '0'));
-        else ss << (n - (b2._numberString[j] - '0'));
-        results.insert(0, ss.str());
-        --i;
-        n = 0;
-    }
-    if (takeOffOne) {
-        std::string number;
-        for (int j = b1._numberString.length() - b2._numberString.length() - 1; j >= 0; --j)
-            if (b1._numberString[j] == '0') {
-                number += "0";
-                continue;
-            } else {
-                number.insert(number.begin(), b1._numberString[j]);
-                int t = strtol(number.c_str(), nullptr, 10);
-                --t;
-                b1._numberString.replace(0, number.size(), std::to_string(t));
-                break;
-            }
-    }
-    while (i >= 0) {
-        std::stringstream ss;
-        if (i == 0) {
-            if (b1._numberString[i] - '0' != 0) {
-                ss << (b1._numberString[i] - '0');
-                results.insert(0, ss.str());
-            }
-        } else {
-            ss << (b1._numberString[i] - '0');
-            results.insert(0, ss.str());
-        }
-
-        --i;
-    }
-    //In the case of all 0's, we only want to return one of them
-    if (results.find_first_not_of('0') == std::string::npos) {
-        results = "0";
-    } else if (results[0] == '0') {
-        int index = results.find_first_not_of('0');
-        results = results.substr(index, results.length() - 1);
-    }
-    return bigInteger(results);
-}
-
 bigInteger bigInteger::multiply(const bigInteger other) {
     bigInteger b1 = other > *this ? other : *this;
     bigInteger b2 = other > *this ? *this : other;
@@ -190,8 +91,8 @@ bigInteger operator+(const bigInteger b4, const bigInteger &b3) {
     bigInteger b2 = b4 > b3 ? b3 : b4;
     if (b1.isNegative() || b2.isNegative()) {
         if (b1.isNegative() && b2.isNegative()) return (b1.negate() + b2.negate()).negate();
-        else if (b1.isNegative() && !b2.isNegative()) return b1.negate().subtract(b2).negate();
-        else return b2.negate().subtract(b1).negate();
+        else if (b1.isNegative() && !b2.isNegative()) return (b1.negate() - b2).negate();
+        else return (b2.negate() - b1).negate();
     }
     std::string results;
     int carry = 0;
@@ -209,8 +110,103 @@ bigInteger operator+(const bigInteger b4, const bigInteger &b3) {
     return bigInteger(results);
 }
 
-bigInteger operator-(bigInteger b1, const bigInteger &b2) {
-    return b1.subtract(b2);
+bigInteger operator-(bigInteger b3, const bigInteger &b4) {
+    bigInteger b1 = b3, b2 = b4;
+    if (b1.isNegative() || b2.isNegative()) {
+        if (b1.isNegative() && b2.isNegative()) return (b1.negate() + b2.negate()).negate();
+        else if (b1.isNegative() && !b2.isNegative()) return (b1.negate() + b2).negate();
+        else return b2.negate() + b1;
+    }
+    std::string results;
+    int n = 0, p = 0;
+    bool takeOffOne = false;
+    bool shouldBeTen = false;
+
+    if (b1 < b2) {
+        //Negative answer
+        std::string t = (b2 - b1).negate().getString();
+        for (unsigned int i = 1; i < t.length(); ++i) {
+            if (t[i] != '0') break;
+            t.erase(1, 1);
+        }
+        return bigInteger(t);
+    }
+
+    //This next if-block fixes the case where the digit difference is greater than 1
+    //100 - 5 is an example. This code adds 0's to make it, for example, 100 - 05, which
+    //allows the rest of the subtraction code to work.
+    if (b1._numberString.size() - b2.getString().size() > 1)
+        for (unsigned long i = 0; i < b1._numberString.size() - b2.getString().size() - 1; ++i)
+            b2._numberString.insert(b2._numberString.begin(), '0');
+    int i = int(b1._numberString.size() - 1);
+    for (int j = int(b2._numberString.size() - 1); j >= 0; --j) {
+        if (((b1._numberString[i] - '0') < (b2._numberString[j] - '0')) && i > 0) {
+            n = char((b1._numberString[i] - '0') + 10);
+            takeOffOne = true;
+            if (j > 0 || b1._numberString[i - 1] != '0') {
+                p = char((b1._numberString[i - 1] - '0') - 1);
+                if (p == -1) {
+                    p = 9;
+                    shouldBeTen = true;
+                }
+                takeOffOne = false;
+            }
+            if (shouldBeTen) {
+                int index = i - 1;
+                for (int a = i - 1; (b1._numberString[a] - '0') == 0; --a) {
+                    b1._numberString[a] = static_cast<char>(p + '0');
+                    --index;
+                }
+                int t = (b1._numberString[index] - '0') - 1;
+                b1._numberString[index] = static_cast<char>(t + '0');
+            }
+            b1._numberString[i - 1] = static_cast<char>(p + '0');
+            shouldBeTen = false;
+        }
+        std::stringstream ss;
+        if (((b1._numberString[i] - '0') == (b2._numberString[j] - '0'))) ss << "0";
+        else if (n <= 0) ss << ((b1._numberString[i] - '0') - (b2._numberString[j] - '0'));
+        else ss << (n - (b2._numberString[j] - '0'));
+        results.insert(0, ss.str());
+        --i;
+        n = 0;
+    }
+    if (takeOffOne) {
+        std::string number;
+        for (int j = b1._numberString.length() - b2._numberString.length() - 1; j >= 0; --j)
+            if (b1._numberString[j] == '0') {
+                number += "0";
+                continue;
+            } else {
+                number.insert(number.begin(), b1._numberString[j]);
+                int t = strtol(number.c_str(), nullptr, 10);
+                --t;
+                b1._numberString.replace(0, number.size(), std::to_string(t));
+                break;
+            }
+    }
+    while (i >= 0) {
+        std::stringstream ss;
+        if (i == 0) {
+            if (b1._numberString[i] - '0' != 0) {
+                ss << (b1._numberString[i] - '0');
+                results.insert(0, ss.str());
+            }
+        } else {
+            ss << (b1._numberString[i] - '0');
+            results.insert(0, ss.str());
+        }
+
+        --i;
+    }
+    //In the case of all 0's, we only want to return one of them
+    if (results.find_first_not_of('0') == std::string::npos) {
+        results = "0";
+    } else if (results[0] == '0') {
+        int index = results.find_first_not_of('0');
+        results = results.substr(index, results.length() - 1);
+    }
+    return bigInteger(results);
 }
 
 bigInteger operator*(bigInteger b1, const bigInteger &b2) {
