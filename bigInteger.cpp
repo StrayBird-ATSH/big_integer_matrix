@@ -194,7 +194,7 @@ bigInteger operator*(bigInteger b3, const bigInteger &b4) {
     return b;
 }
 
-bool operator==(bigInteger b1, const bigInteger &b2) {
+bool operator==(const bigInteger b1, const bigInteger &b2) {
     return b1.number == b2.number;
 }
 
