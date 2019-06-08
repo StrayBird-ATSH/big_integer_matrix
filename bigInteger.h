@@ -18,8 +18,6 @@ public:
     bigInteger();
 
     explicit bigInteger(std::string number);
-
-    bigInteger(long long number);
     //@}
 
     /**

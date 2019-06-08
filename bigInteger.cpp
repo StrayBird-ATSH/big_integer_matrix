@@ -6,8 +6,6 @@ bigInteger::bigInteger() : _numberString() {}
 
 bigInteger::bigInteger(std::string number) : _numberString(number) {}
 
-bigInteger::bigInteger(long long number) : _numberString(std::to_string(number)) {}
-
 std::string bigInteger::getString() {
     return this->_numberString;
 }
@@ -176,10 +174,10 @@ bigInteger operator*(bigInteger b3, const bigInteger &b4) {
         else if (b1.isNegative() && !b2.isNegative()) return (b1.negate() * b2).negate();
         else return (b2.negate() * b1).negate();
     }
-    if (b1 == 0 || b2 == 0) return 0;
+    if (b1 == 0 || b2 == 0) return bigInteger("0");
     int carry = 0;
     int zeroCounter = 0;
-    bigInteger b = 0;
+    bigInteger b("0");
 
     for (unsigned int i = 0; i < b1._numberString.size() - b2._numberString.size(); ++i)
         b2._numberString.insert(b2._numberString.begin(), '0');
