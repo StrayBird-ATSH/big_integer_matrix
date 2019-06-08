@@ -126,16 +126,6 @@ public:
 
     //@{
     /**
-     * Assignment operator
-     * @param other - The new value for the BigNumber
-     * @return A BigNumber containing the new value
-     */
-    bigInteger &operator=(const bigInteger &other);
-
-    //@}
-
-    //@{
-    /**
      * Addition assignment operator\n
      * Adds and assigns a value to the current instance
      * @param other - The value being added

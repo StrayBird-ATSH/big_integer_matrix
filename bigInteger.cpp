@@ -245,8 +245,6 @@ unsigned int bigInteger::operator[](int index) {
     return static_cast<unsigned int>(this->_numberString[index] - '0');
 }
 
-bigInteger &bigInteger::operator=(const bigInteger &other) = default;
-
 bigInteger &bigInteger::operator+=(const bigInteger &other) {
     *this = *this + other;
     return *this;
