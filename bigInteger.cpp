@@ -4,7 +4,7 @@
 
 bigInteger::bigInteger() : number() {}
 
-bigInteger::bigInteger(std::string number) : number(number) {}
+bigInteger::bigInteger(std::string number) : number(std::move(number)) {}
 
 std::string bigInteger::getString() {
     return this->number;
@@ -80,7 +80,6 @@ bigInteger operator-(bigInteger b3, const bigInteger &b4) {
     bool shouldBeTen = false;
 
     if (b1 < b2) {
-        //Negative answer
         std::string t = (b2 - b1).negate().getString();
         for (unsigned int i = 1; i < t.length(); ++i) {
             if (t[i] != '0') break;
@@ -88,10 +87,6 @@ bigInteger operator-(bigInteger b3, const bigInteger &b4) {
         }
         return bigInteger(t);
     }
-
-    //This next if-block fixes the case where the digit difference is greater than 1
-    //100 - 5 is an example. This code adds 0's to make it, for example, 100 - 05, which
-    //allows the rest of the subtraction code to work.
     if (b1.number.size() - b2.getString().size() > 1)
         for (unsigned long i = 0; i < b1.number.size() - b2.getString().size() - 1; ++i)
             b2.number.insert(b2.number.begin(), '0');
@@ -156,10 +151,8 @@ bigInteger operator-(bigInteger b3, const bigInteger &b4) {
 
         --i;
     }
-    //In the case of all 0's, we only want to return one of them
-    if (results.find_first_not_of('0') == std::string::npos) {
-        results = "0";
-    } else if (results[0] == '0') {
+    if (results.find_first_not_of('0') == std::string::npos) results = "0";
+    else if (results[0] == '0') {
         int index = results.find_first_not_of('0');
         results = results.substr(index, results.length() - 1);
     }
@@ -197,9 +190,7 @@ bigInteger operator*(bigInteger b3, const bigInteger &b4) {
     }
     if (b.number.find_first_not_of('0') != std::string::npos)
         b.setString(b.number.erase(0, b.number.find_first_not_of('0')));
-    else
-        //In the case of all 0's, we only want to return one of them
-        b.setString("0");
+    else b.setString("0");
     return b;
 }
 
