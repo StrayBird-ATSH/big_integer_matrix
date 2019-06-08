@@ -23,13 +23,6 @@ public:
     //@}
 
     /**
-     * Multiply the current instance by another BigNumber
-     * @param other - The other BigNumber
-     * @return The product of the two BigNumbers
-     */
-    bigInteger multiply(bigInteger other);
-
-    /**
      * Get the string value of the current instance
      * @return The BigNumber as a string
      */

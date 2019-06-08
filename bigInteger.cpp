@@ -8,43 +8,6 @@ bigInteger::bigInteger(std::string number) : _numberString(number) {}
 
 bigInteger::bigInteger(long long number) : _numberString(std::to_string(number)) {}
 
-bigInteger bigInteger::multiply(const bigInteger other) {
-    bigInteger b1 = other > *this ? other : *this;
-    bigInteger b2 = other > *this ? *this : other;
-    if (b1.isNegative() || b2.isNegative()) {
-        if (b1.isNegative() && b2.isNegative()) return b1.negate().multiply(b2.negate());
-        else if (b1.isNegative() && !b2.isNegative()) return b1.negate().multiply(b2).negate();
-        else return b2.negate().multiply(b1).negate();
-    }
-    if (b1 == 0 || b2 == 0) return 0;
-    int carry = 0;
-    int zeroCounter = 0;
-    bigInteger b = 0;
-
-    for (unsigned int i = 0; i < b1._numberString.size() - b2._numberString.size(); ++i)
-        b2._numberString.insert(b2._numberString.begin(), '0');
-    for (long long int i = (b2._numberString.size() - 1); i >= 0; --i) {
-        std::string rr;
-        for (long long int j = int(b1._numberString.size() - 1); j >= 0; --j) {
-            int val = ((b2._numberString[i] - '0') * (b1._numberString[j] - '0')) + carry;
-            carry = 0;
-            if (val > 9 && j != 0) {
-                carry = val / 10;
-                rr.insert(0, std::to_string(val % 10));
-            } else rr.insert(0, std::to_string(val));
-        }
-        if (zeroCounter > 0) for (int x = 0; x < zeroCounter; ++x) rr.append("0");
-        ++zeroCounter;
-        b += bigInteger(rr);
-    }
-    if (b._numberString.find_first_not_of('0') != std::string::npos)
-        b.setString(b._numberString.erase(0, b._numberString.find_first_not_of('0')));
-    else
-        //In the case of all 0's, we only want to return one of them
-        b.setString("0");
-    return b;
-}
-
 std::string bigInteger::getString() {
     return this->_numberString;
 }
@@ -209,8 +172,41 @@ bigInteger operator-(bigInteger b3, const bigInteger &b4) {
     return bigInteger(results);
 }
 
-bigInteger operator*(bigInteger b1, const bigInteger &b2) {
-    return b1.multiply(b2);
+bigInteger operator*(bigInteger b3, const bigInteger &b4) {
+    bigInteger b1 = b3 > b4 ? b3 : b4;
+    bigInteger b2 = b3 > b4 ? b4 : b3;
+    if (b1.isNegative() || b2.isNegative()) {
+        if (b1.isNegative() && b2.isNegative()) return b1.negate() * b2.negate();
+        else if (b1.isNegative() && !b2.isNegative()) return (b1.negate() * b2).negate();
+        else return (b2.negate() * b1).negate();
+    }
+    if (b1 == 0 || b2 == 0) return 0;
+    int carry = 0;
+    int zeroCounter = 0;
+    bigInteger b = 0;
+
+    for (unsigned int i = 0; i < b1._numberString.size() - b2._numberString.size(); ++i)
+        b2._numberString.insert(b2._numberString.begin(), '0');
+    for (long long int i = (b2._numberString.size() - 1); i >= 0; --i) {
+        std::string rr;
+        for (long long int j = int(b1._numberString.size() - 1); j >= 0; --j) {
+            int val = ((b2._numberString[i] - '0') * (b1._numberString[j] - '0')) + carry;
+            carry = 0;
+            if (val > 9 && j != 0) {
+                carry = val / 10;
+                rr.insert(0, std::to_string(val % 10));
+            } else rr.insert(0, std::to_string(val));
+        }
+        if (zeroCounter > 0) for (int x = 0; x < zeroCounter; ++x) rr.append("0");
+        ++zeroCounter;
+        b += bigInteger(rr);
+    }
+    if (b._numberString.find_first_not_of('0') != std::string::npos)
+        b.setString(b._numberString.erase(0, b._numberString.find_first_not_of('0')));
+    else
+        //In the case of all 0's, we only want to return one of them
+        b.setString("0");
+    return b;
 }
 
 bool operator==(bigInteger b1, const bigInteger &b2) {
