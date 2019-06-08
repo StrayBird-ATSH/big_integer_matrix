@@ -74,12 +74,12 @@ std::ostream &operator<<(std::ostream &os, const bigInteger &num) {
 
 /**
  * The implementation of the addition of two big integers.
- * @param left One of the adding object
- * @param right One of the adding object
+ * @param lAddend One of the addends
+ * @param rAddend One of the addends
  * @return The result of the addition as a big integer object
  */
-bigInteger operator+(const bigInteger left, const bigInteger &right) {
-    bigInteger b1 = left > right ? left : right, b2 = left > right ? right : left;
+bigInteger operator+(const bigInteger lAddend, const bigInteger &rAddend) {
+    bigInteger b1 = lAddend > rAddend ? lAddend : rAddend, b2 = lAddend > rAddend ? rAddend : lAddend;
     if (b1.isNegative() || b2.isNegative()) {
         if (b1.isNegative() && b2.isNegative()) return (b1.negate() + b2.negate()).negate();
         else if (b1.isNegative() && !b2.isNegative()) return (b1.negate() - b2).negate();
@@ -237,45 +237,94 @@ bigInteger operator*(const bigInteger lMultiplier, const bigInteger &rMultiplier
     return b;
 }
 
-bool operator==(const bigInteger b1, const bigInteger &b2) {
-    return b1.number == b2.number;
+/**
+ * The implementation of determining whether two big integers are equal.
+ * The equality of string is used directly for the determination.
+ * However, this method assumes that the given two numbers are valid and
+ * don't have circumstances like have leading zeros.
+ * Considering this method is only used inside this class, further improvement
+ * is neglected for the sake of performance.
+ * @param n1 One of the numbers
+ * @param n2 The other of the numbers
+ * @return true if the two numbers are equal and false otherwise
+ */
+bool operator==(const bigInteger n1, const bigInteger &n2) {
+    return n1.number == n2.number;
 }
 
+/**
+ * The implementation of determining whether one big integer is equal to
+ * another native integer.
+ * The equality of string is used directly for the determination.
+ * However, this method assumes that the given two numbers are valid and
+ * don't have circumstances like have leading zeros.
+ * Considering this method is only used inside this class, further improvement
+ * is neglected for the sake of performance.
+ * @param n1 One of the numbers
+ * @param n2 The other of the numbers
+ * @return true if the two numbers are equal and false otherwise
+ */
 bool operator==(bigInteger b1, const long long &b2) {
     return b1 == bigInteger(std::to_string(b2));
 }
 
-bool operator>(bigInteger b1, const bigInteger &b2) {
-    if (b1.isNegative() || b2.isNegative()) {
-        if (b1.isNegative() && b2.isNegative()) {
-            bigInteger bt = b2;
-            b1.number.erase(0, 1);
+/**
+ * The implementation of determining whether one big integer is greater
+ * than another big integer
+ * @param n1 One of the numbers
+ * @param n2 The other of the numbers
+ * @return true if the the first number is greater than the second one
+ */
+bool operator>(bigInteger n1, const bigInteger &n2) {
+    if (n1.isNegative() || n2.isNegative()) {
+        if (n1.isNegative() && n2.isNegative()) {
+            bigInteger bt = n2;
+            n1.number.erase(0, 1);
             bt.number.erase(0, 1);
-            return b1 < bt;
-        } else return !(b1.isNegative() && !b2.isNegative());
+            return n1 < bt;
+        } else return !(n1.isNegative() && !n2.isNegative());
     }
-    b1 = b1.trimLeadingZeros();
-    auto c = bigInteger(b2);
+    n1 = n1.trimLeadingZeros();
+    auto c = bigInteger(n2);
     c = c.trimLeadingZeros();
-    if (b1 == c) return false;
-    if (b1.number.size() > c.number.size()) return true;
-    else if (c.number.size() > b1.number.size()) return false;
+    if (n1 == c) return false;
+    if (n1.number.size() > c.number.size()) return true;
+    else if (c.number.size() > n1.number.size()) return false;
     else
-        for (unsigned int i = 0; i < b1.number.size(); ++i) {
-            if (b1[i] == static_cast<unsigned int>(c.number[i] - '0')) continue;
-            return b1[i] > static_cast<unsigned int>(c.number[i] - '0');
+        for (unsigned int i = 0; i < n1.number.size(); ++i) {
+            if (n1[i] == static_cast<unsigned int>(c.number[i] - '0')) continue;
+            return n1[i] > static_cast<unsigned int>(c.number[i] - '0');
         }
     return false;
 }
 
+/**
+ * The implementation of determining whether one big integer is less
+ * than another big integer
+ * @param n1 One of the numbers
+ * @param n2 The other of the numbers
+ * @return true if the the first number is less than the second one
+ */
 bool operator<(bigInteger &b1, const bigInteger &b2) {
     return !(b1 == b2) && !(b1 > b2);
 }
 
+/**
+ * The internal auxiliary function that gets the specified bit from
+ * a big integer string
+ * @param index The index of the desired character
+ * @return The character as the actual number
+ */
 unsigned int bigInteger::operator[](int index) {
     return static_cast<unsigned int>(this->number[index] - '0');
 }
 
+/**
+ * This overloading operator is not required but its implementation
+ * can simplify the codes in other places
+ * @param other The addend
+ * @return The result of the addition
+ */
 bigInteger &bigInteger::operator+=(const bigInteger &other) {
     *this = *this + other;
     return *this;
