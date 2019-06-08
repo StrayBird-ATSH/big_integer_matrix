@@ -106,30 +106,30 @@ bigInteger operator+(const bigInteger left, const bigInteger &right) {
  * @param subtrahend The subtrahend
  * @return The result of the subtraction as a big integer object
  */
-bigInteger operator-(bigInteger minuend, const bigInteger &subtrahend) {
-    bigInteger b2 = subtrahend;
-    if (minuend.isNegative() || b2.isNegative()) {
-        if (minuend.isNegative() && b2.isNegative()) return (minuend.negate() + b2.negate()).negate();
-        else if (minuend.isNegative() && !b2.isNegative()) return (minuend.negate() + b2).negate();
-        else return b2.negate() + minuend;
+bigInteger operator-(bigInteger minuend, const bigInteger &b) {
+    bigInteger subtrahend = b;
+    if (minuend.isNegative() || subtrahend.isNegative()) {
+        if (minuend.isNegative() && subtrahend.isNegative()) return (minuend.negate() + subtrahend.negate()).negate();
+        else if (minuend.isNegative() && !subtrahend.isNegative()) return (minuend.negate() + subtrahend).negate();
+        else return subtrahend.negate() + minuend;
     }
     std::string results;
     int n = 0, p = 0;
     bool takeOffOne = false, shouldBeTen = false;
-    if (minuend < b2) {
-        std::string t = (b2 - minuend).negate().getNumber();
+    if (minuend < subtrahend) {
+        std::string t = (subtrahend - minuend).negate().getNumber();
         for (unsigned int i = 1; i < t.length(); ++i) {
             if (t[i] != '0') break;
             t.erase(1, 1);
         }
         return bigInteger(t);
     }
-    if (minuend.number.size() - b2.getNumber().size() > 1)
-        for (unsigned long i = 0; i < minuend.number.size() - b2.getNumber().size() - 1; ++i)
-            b2.number.insert(b2.number.begin(), '0');
+    if (minuend.number.size() - subtrahend.getNumber().size() > 1)
+        for (unsigned long i = 0; i < minuend.number.size() - subtrahend.getNumber().size() - 1; ++i)
+            subtrahend.number.insert(subtrahend.number.begin(), '0');
     int i = int(minuend.number.size() - 1);
-    for (int j = int(b2.number.size() - 1); j >= 0; --j) {
-        if (((minuend.number[i] - '0') < (b2.number[j] - '0')) && i > 0) {
+    for (int j = int(subtrahend.number.size() - 1); j >= 0; --j) {
+        if (((minuend.number[i] - '0') < (subtrahend.number[j] - '0')) && i > 0) {
             n = char((minuend.number[i] - '0') + 10);
             takeOffOne = true;
             if (j > 0 || minuend.number[i - 1] != '0') {
@@ -153,16 +153,16 @@ bigInteger operator-(bigInteger minuend, const bigInteger &subtrahend) {
             shouldBeTen = false;
         }
         std::stringstream ss;
-        if (((minuend.number[i] - '0') == (b2.number[j] - '0'))) ss << "0";
-        else if (n <= 0) ss << ((minuend.number[i] - '0') - (b2.number[j] - '0'));
-        else ss << (n - (b2.number[j] - '0'));
+        if (((minuend.number[i] - '0') == (subtrahend.number[j] - '0'))) ss << "0";
+        else if (n <= 0) ss << ((minuend.number[i] - '0') - (subtrahend.number[j] - '0'));
+        else ss << (n - (subtrahend.number[j] - '0'));
         results.insert(0, ss.str());
         --i;
         n = 0;
     }
     if (takeOffOne) {
         std::string number;
-        for (int j = minuend.number.length() - b2.number.length() - 1; j >= 0; --j)
+        for (int j = minuend.number.length() - subtrahend.number.length() - 1; j >= 0; --j)
             if (minuend.number[j] == '0') {
                 number += "0";
                 continue;
@@ -202,7 +202,7 @@ bigInteger operator-(bigInteger minuend, const bigInteger &subtrahend) {
  * @param rMultiplier One of the multipliers
  * @return The result of the subtraction as a big integer object
  */
-bigInteger operator*(bigInteger lMultiplier, const bigInteger &rMultiplier) {
+bigInteger operator*(const bigInteger lMultiplier, const bigInteger &rMultiplier) {
     bigInteger b1 = lMultiplier > rMultiplier ? lMultiplier : rMultiplier;
     bigInteger b2 = lMultiplier > rMultiplier ? rMultiplier : lMultiplier;
     if (b1.isNegative() || b2.isNegative()) {
