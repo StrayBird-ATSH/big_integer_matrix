@@ -23,13 +23,6 @@ public:
     //@}
 
     /**
-     * Add another BigNumber to the current instance
-     * @param other - The other BigNumber
-     * @return The sum of the two BigNumbers
-     */
-    bigInteger add(bigInteger other);
-
-    /**
      * Subtract another BigNumber from the current instance
      * @param other - The other BigNumber
      * @return The difference of the two BigNumbers

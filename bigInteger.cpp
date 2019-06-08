@@ -8,37 +8,12 @@ bigInteger::bigInteger(std::string number) : _numberString(number) {}
 
 bigInteger::bigInteger(long long number) : _numberString(std::to_string(number)) {}
 
-bigInteger bigInteger::add(const bigInteger other) {
-    bigInteger b1 = other > *this ? other : *this;
-    bigInteger b2 = other > *this ? *this : other;
-    if (b1.isNegative() || b2.isNegative()) {
-        if (b1.isNegative() && b2.isNegative()) return b1.negate().add(b2.negate()).negate();
-        else if (b1.isNegative() && !b2.isNegative()) return b1.negate().subtract(b2).negate();
-        else return b2.negate().subtract(b1).negate();
-    }
-    std::string results;
-    int carry = 0;
-    int diff = int(b1._numberString.size() - b2._numberString.size());
-    for (int i = 0; i < diff; ++i) b2._numberString.insert(b2._numberString.begin(), '0');
-    for (int i = int(b1._numberString.size() - 1); i >= 0; --i) {
-        int sum = (b1._numberString[i] - '0') + (b2._numberString[i] - '0') + carry;
-        carry = 0;
-        if (sum <= 9 || i == 0) results.insert(0, std::to_string(sum));
-        else {
-            results.insert(0, std::to_string(sum % 10));
-            carry = 1;
-        }
-    }
-    return bigInteger(results);
-}
-
-
 bigInteger bigInteger::subtract(const bigInteger other) {
     bigInteger b1 = *this, b2 = other;
     if (b1.isNegative() || b2.isNegative()) {
-        if (b1.isNegative() && b2.isNegative()) return b1.negate().add(b2.negate()).negate();
-        else if (b1.isNegative() && !b2.isNegative()) return b1.negate().add(b2).negate();
-        else return b2.negate().add(b1);
+        if (b1.isNegative() && b2.isNegative()) return (b1.negate() + b2.negate()).negate();
+        else if (b1.isNegative() && !b2.isNegative()) return (b1.negate() + b2).negate();
+        else return b2.negate() + b1;
     }
     std::string results;
     int n = 0, p = 0;
@@ -210,8 +185,28 @@ std::ostream &operator<<(std::ostream &os, const bigInteger &num) {
     return os;
 }
 
-bigInteger operator+(bigInteger b1, const bigInteger &b2) {
-    return b1.add(b2);
+bigInteger operator+(const bigInteger b4, const bigInteger &b3) {
+    bigInteger b1 = b4 > b3 ? b4 : b3;
+    bigInteger b2 = b4 > b3 ? b3 : b4;
+    if (b1.isNegative() || b2.isNegative()) {
+        if (b1.isNegative() && b2.isNegative()) return (b1.negate() + b2.negate()).negate();
+        else if (b1.isNegative() && !b2.isNegative()) return b1.negate().subtract(b2).negate();
+        else return b2.negate().subtract(b1).negate();
+    }
+    std::string results;
+    int carry = 0;
+    int diff = int(b1._numberString.size() - b2._numberString.size());
+    for (int i = 0; i < diff; ++i) b2._numberString.insert(b2._numberString.begin(), '0');
+    for (int i = int(b1._numberString.size() - 1); i >= 0; --i) {
+        int sum = (b1._numberString[i] - '0') + (b2._numberString[i] - '0') + carry;
+        carry = 0;
+        if (sum <= 9 || i == 0) results.insert(0, std::to_string(sum));
+        else {
+            results.insert(0, std::to_string(sum % 10));
+            carry = 1;
+        }
+    }
+    return bigInteger(results);
 }
 
 bigInteger operator-(bigInteger b1, const bigInteger &b2) {
