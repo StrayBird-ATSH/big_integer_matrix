@@ -115,7 +115,7 @@ bigInteger operator-(bigInteger minuend, const bigInteger &b) {
     }
     std::string results;
     int n = 0, p = 0;
-    bool takeOffOne = false, shouldBeTen = false;
+    bool borrow = false, carryOver = false;
     if (minuend < subtrahend) {
         std::string t = (subtrahend - minuend).negate().getNumber();
         for (unsigned int i = 1; i < t.length(); ++i) {
@@ -131,16 +131,16 @@ bigInteger operator-(bigInteger minuend, const bigInteger &b) {
     for (int j = int(subtrahend.number.size() - 1); j >= 0; --j) {
         if (((minuend.number[i] - '0') < (subtrahend.number[j] - '0')) && i > 0) {
             n = char((minuend.number[i] - '0') + 10);
-            takeOffOne = true;
+            borrow = true;
             if (j > 0 || minuend.number[i - 1] != '0') {
                 p = char((minuend.number[i - 1] - '0') - 1);
                 if (p == -1) {
                     p = 9;
-                    shouldBeTen = true;
+                    carryOver = true;
                 }
-                takeOffOne = false;
+                borrow = false;
             }
-            if (shouldBeTen) {
+            if (carryOver) {
                 int index = i - 1;
                 for (int a = i - 1; (minuend.number[a] - '0') == 0; --a) {
                     minuend.number[a] = static_cast<char>(p + '0');
@@ -150,7 +150,7 @@ bigInteger operator-(bigInteger minuend, const bigInteger &b) {
                 minuend.number[index] = static_cast<char>(t + '0');
             }
             minuend.number[i - 1] = static_cast<char>(p + '0');
-            shouldBeTen = false;
+            carryOver = false;
         }
         std::stringstream ss;
         if (((minuend.number[i] - '0') == (subtrahend.number[j] - '0'))) ss << "0";
@@ -160,7 +160,7 @@ bigInteger operator-(bigInteger minuend, const bigInteger &b) {
         --i;
         n = 0;
     }
-    if (takeOffOne) {
+    if (borrow) {
         std::string number;
         for (int j = minuend.number.length() - subtrahend.number.length() - 1; j >= 0; --j)
             if (minuend.number[j] == '0') {
